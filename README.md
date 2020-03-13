@@ -1,6 +1,6 @@
 # Anteproyecto - DAW
 
-Cuándo quieres aprender un lenguaje de programación o un alguna tecnología, encontramos una cantidad de recursos enorme, pero realmente, ¿son de calidad? A partir de ver la gran cantidad de material para aprender que tenemos se me ocurrió la idea de crear una plataforma donde se aporte los mejores recursos y exista un sistema de puntuación para clasificarlos y de esta manera tener solo los de calidad..
+Cuando se quiere aprender un lenguaje de programación o alguna nueva tecnología, encontramos una enorme cantidad de recursos. Pero..., ¿realmente son de calidad?. A partir de la gran cantidad de material con el que aprender disponible hoy día sería buena idea crear una plataforma donde se puedan aportar recursos que, con un sistema de puntuación para clasificarlos, nos permita disponer de aquellos que alcancen una calidad máxima.
 
 - Finalidad
 
