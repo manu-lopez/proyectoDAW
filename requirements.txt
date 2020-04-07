@@ -1,0 +1,4 @@
+Django
+django-environ #Enviroment variables
+psycopg2 # PostgreSQL adapter
+whitenoise # Static files
