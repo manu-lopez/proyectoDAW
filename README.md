@@ -1,27 +1,64 @@
-# Anteproyecto - DAW
+# Proyecto Final DAW [🚧 EN CONSTRUCCIÓN 🚧]
 
 Cuando se quiere aprender un lenguaje de programación o alguna nueva tecnología, encontramos una enorme cantidad de recursos. Pero..., ¿realmente son de calidad?. A partir de la gran cantidad de material con el que aprender disponible hoy día sería buena idea crear una plataforma donde se puedan aportar recursos que, con un sistema de puntuación para clasificarlos, nos permita disponer de aquellos que alcancen una calidad máxima.
 
-- Finalidad
+------
 
-La plataforma web, clasificará los recursos (cursos, libros, tutoriales) disponibles para aprender, mediante categorías (lenguaje, framework, etc). Dentro de cada categorías los clasificamos si son gratuitos o de pago. Luego tendrán un ranking con los recursos ordenados por puntuacion. Estos estarán puntuados por la comunidad y tendrán la posibilidad de añadir comentarios.
+## Comenzando 🚀
 
-- Objetivos
+> *La siguiente documentación está en proceso de construcción, al igual que el proyecto, por lo que puede contener errores.*
 
-La plataforma permitirá a los usuarios publicar recursos y que el resto de usuarios los puntuen, comenten, etc.
+*A continuación detallaremos los requisitos necesarios para poder hacer funcionar este repositorio en local.*
 
-- Hardware y Software
 
-Las tecnologías las voy a dividir en dos. Por un lado las que usaré para el proyecto básico y por otro lado, tecnologías que considero útiles y me gustaria aprender, por lo tanto las usaré si no tengo problemas de tiempo para implementarlas.
+### Pre-requisitos 📋
 
-Como tecnologías básicas pues haré uso de [Django](https://www.djangoproject.com/) y [PostgreSQL](https://www.postgresql.org/), y maquetaría de manera rápida con [bootstrap](https://getbootstrap.com/).
+Independientemente del sistema operativo que tengamos (Linux/MacOs/Windows), tenemos que tener instalado (mediante repositorio/Homebrew/instalador desde web oficial) lo indicado a continuación:
 
-Como tecnologías extras, pues para maquetar usaría [tailwindcss](https://tailwindcss.com/) y si necesitara de un framework frontend, sería [vuejs](https://vuejs.org/). Luego para el despliegue me gustaria hacer uso de [Docker](https://www.docker.com/).
+- [Git](https://git-scm.com/downloads)
+- [Python](https://www.python.org/downloads/) (en su version 3)
+- [Pip](https://pypi.org/project/pip/)
+- [Docker](https://www.docker.com/products/docker-desktop)
+- Editor de código
 
-- Planificación
+### Instalación 🔧
 
-Mucho café y dormir poco 🤷🏽‍♂️
+El primer paso será clonar el repositorio.
 
-Probablemente use un sistema parecido a scrum. Dividiré el proyecto en tareas, las ordenaré según importancia y las iré realizando. No creo que establezca tiempos porque no serán acertados.
+```bash
+git clone https://github.com/manu-lopez/proyectoDAW.git
+```
 
-El proyecto estará en [Github](https://github.com/manu-lopez/proyectoDAW) y trabajaré mediante GitFlow o lo más parecido que pueda, ya que nunca trabajé usando este método, aunque si he trabajado diviendo en ramas el proyecto.
+A continuación debemos asegurarnos que tenemos Docker corriendo. 
+
+```bash
+# Podemos ejecutar uno de estos comandos
+docker version 
+docker info
+```
+
+Nos dará información de Docker o en el caso de que no esté corriendo, nos dirá que no consiguio conectar con el daemon.
+
+Cuando tengamos seguro que Docker está funcionando, pasamos a construir los contenedores.
+
+```
+docker-compose up -d
+```
+
+Ya podremos acceder a la aplicación Django. (Falta la aplicación)
+
+## Despliegue 📦
+
+En proceso...
+
+## Construido con 🛠️
+
+- [Python](https://www.python.org/)
+- [Docker](https://www.docker.com/)
+- [Django](https://www.djangoproject.com/)
+- [PostgreSQL](https://www.postgresql.org/)
+- Y mucho amor 🤍
+
+## Autor ✒️
+
+- [Manuel López Ramos](https://github.com/manu-lopez)
