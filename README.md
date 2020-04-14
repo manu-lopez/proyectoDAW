@@ -59,6 +59,7 @@ En proceso...
 - [Docker](https://www.docker.com/)
 - [Django](https://www.djangoproject.com/)
 - [PostgreSQL](https://www.postgresql.org/)
+- [Poetry](https://python-poetry.org)
 - Y mucho amor 🤍
 
 ## Autor ✒️
