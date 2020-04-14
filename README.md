@@ -16,8 +16,6 @@ Cuando se quiere aprender un lenguaje de programación o alguna nueva tecnologí
 Independientemente del sistema operativo que tengamos (Linux/MacOs/Windows), tenemos que tener instalado (mediante repositorio/Homebrew/instalador desde web oficial) lo indicado a continuación:
 
 - [Git](https://git-scm.com/downloads)
-- [Python](https://www.python.org/downloads/) (en su version 3)
-- [Pip](https://pypi.org/project/pip/)
 - [Docker](https://www.docker.com/products/docker-desktop)
 - Editor de código
 
@@ -45,7 +43,7 @@ Cuando tengamos seguro que Docker está funcionando, pasamos a construir los con
 docker-compose up -d
 ```
 
-Ya podremos acceder a la aplicación Django. (Falta la aplicación)
+Ya podremos acceder a la aplicación Django. 
 
 En proceso...
 
