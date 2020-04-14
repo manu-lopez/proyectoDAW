@@ -1,5 +1,5 @@
 # Pull from official image
-FROM python
+FROM python:3.8-slim
 
 # This prevents Python from writing out pyc files
 ENV PYTHONDONTWRITEBYTECODE 1
@@ -13,8 +13,10 @@ WORKDIR /code
 
 # Copy and install dependencies
 COPY requirements.txt /code/
-RUN pip install --upgrade pip
+
+RUN apt-get update
+RUN apt-get install -y --no-install-recommends libpq-dev gcc python3-dev libssl-dev
 RUN pip install -r requirements.txt
 
 # Copy project
-COPY . /code/
+COPY /proyecto /code/
