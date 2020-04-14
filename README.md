@@ -2,7 +2,7 @@
 
 Cuando se quiere aprender un lenguaje de programación o alguna nueva tecnología, encontramos una enorme cantidad de recursos. Pero..., ¿realmente son de calidad?. A partir de la gran cantidad de material con el que aprender disponible hoy día sería buena idea crear una plataforma donde se puedan aportar recursos que, con un sistema de puntuación para clasificarlos, nos permita disponer de aquellos que alcancen una calidad máxima.
 
-------
+
 
 ## Comenzando 🚀
 
@@ -37,7 +37,7 @@ docker version
 docker info
 ```
 
-Nos dará información de Docker o en el caso de que no esté corriendo, nos dirá que no consiguio conectar con el daemon.
+Nos dará información de Docker o en el caso de que no esté corriendo, nos dirá que no consiguió conectar con el daemon.
 
 Cuando tengamos seguro que Docker está funcionando, pasamos a construir los contenedores.
 
@@ -46,6 +46,8 @@ docker-compose up -d
 ```
 
 Ya podremos acceder a la aplicación Django. (Falta la aplicación)
+
+En proceso...
 
 ## Despliegue 📦
 
