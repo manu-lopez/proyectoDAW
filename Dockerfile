@@ -15,7 +15,7 @@ WORKDIR /code
 COPY requirements.txt /code/
 
 RUN apt-get update
-RUN apt-get install -y --no-install-recommends libpq-dev gcc python3-dev libssl-dev
+RUN apt-get install -y --no-install-recommends libpq-dev gcc python3-dev libssl-dev libjpeg-dev
 RUN pip install -r requirements.txt
 
 # Copy project
