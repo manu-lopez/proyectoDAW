@@ -19,3 +19,12 @@ db.sqlite3
 
 # PosgreSQL
 postgres_data/
+
+# Pycharm
+.idea
+
+# Media Files
+proyecto/media/
+
+# Env
+proyecto/venv/
