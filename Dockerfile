@@ -1,5 +1,5 @@
 # Pull from official image
-FROM python:3.8-slim
+FROM python:3.8-buster
 
 # This prevents Python from writing out pyc files
 ENV PYTHONDONTWRITEBYTECODE 1
@@ -15,7 +15,6 @@ WORKDIR /code
 COPY requirements.txt /code/
 
 RUN apt-get update
-RUN apt-get install -y --no-install-recommends libpq-dev gcc python3-dev libssl-dev libjpeg-dev
 RUN pip install -r requirements.txt
 
 # Copy project
