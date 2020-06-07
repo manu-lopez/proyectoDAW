@@ -1,4 +1,4 @@
-# Proyecto Final DAW [🚧 EN CONSTRUCCIÓN 🚧]
+# Proyecto Final DAW
 
 Cuando se quiere aprender un lenguaje de programación o alguna nueva tecnología, encontramos una enorme cantidad de recursos. Pero..., ¿realmente son de calidad?. A partir de la gran cantidad de material con el que aprender disponible hoy día sería buena idea crear una plataforma donde se puedan aportar recursos que, con un sistema de puntuación para clasificarlos, nos permita disponer de aquellos que alcancen una calidad máxima.
 
@@ -21,7 +21,7 @@ Independientemente del sistema operativo que tengamos (Linux/MacOs/Windows), ten
 
 ### Instalación 🔧
 
-El primer paso será clonar el repositorio.
+El primer paso será clonar este repositorio.
 
 ```bash
 git clone https://github.com/manu-lopez/proyectoDAW.git
@@ -57,8 +57,6 @@ En proceso...
 - [Docker](https://www.docker.com/)
 - [Django](https://www.djangoproject.com/)
 - [PostgreSQL](https://www.postgresql.org/)
-- [Poetry](https://python-poetry.org)
-- Y mucho amor 🤍
 
 ## Autor ✒️
 
