@@ -8,23 +8,24 @@ from .models import Resource
 # Create your views here.
 
 class ResourceCreate(LoginRequiredMixin, CreateView):
-    model = Resource
     form_class = ResourceForm
     template_name = "blr/create_resource.html"
 
+    # Set logged user as creator of the resource
     def form_valid(self, form):
         form.instance.post_author = self.request.user
         return super().form_valid(form)
 
 class ResourceUpdate(UpdateView):
-    model = Resource
+    # get object or 404 -> mirar
+    # model = Resource
     form_class = ResourceForm
     template_name = "blr/modify_resource.html"
 
 
 class ResourceDelete(DeleteView):
     model = Resource
-    success_url = reverse_lazy('')
+    success_url = reverse_lazy('index')
 
 
 def index(request):

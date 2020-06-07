@@ -2,7 +2,8 @@ from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator
-from django.urls import reverse
+from django.urls import reverse_lazy
+from taggit.managers import TaggableManager
 
 # Create your models here.
 
@@ -17,13 +18,6 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user
-
-
-class Category(models.Model):
-    category_name = models.CharField(max_length=20)
-
-    def __str__(self):
-        return self.category_name
 
 
 class Type(models.Model):
@@ -51,14 +45,15 @@ class Resource(models.Model):
         blank=True,
         null=True,
     )
-    resource_category = models.ManyToManyField(Category)
+    resource_tags = TaggableManager()
     resource_type = models.ForeignKey(Type, on_delete=models.CASCADE,)
 
     def __str__(self):
         return self.resource_name
         
     def get_absolute_url(self):
-        return reverse ('resource-detail', kwargs={'pk':self.pk})
+        return reverse_lazy('index')
+        # return reverse ('resource-detail', kwargs={'pk':self.pk})
 
 class Comment(models.Model):
     comment_id = models.AutoField(primary_key=True)
@@ -77,30 +72,3 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.comment_text[:15]+"..."
-
-
-# class Resource_vote(models.Model):
-#     vote_type = models.PositiveSmallIntegerField(
-#         default=0, min_value=-1, max_value=1)
-#     resource_id = models.ForeignKey(Resource, on_delete=model.CASCADE,)
-#     user_id = models.ForeignKey(
-#         settings.AUTH_USER_MODEL,
-#         on_delete=models.CASCADE,
-#     )
-
-#     class Meta:
-#         unique_together = ['resource_id', 'user_id']
-
-
-# class Comment_vote(models.Model):
-#     vote_type = models.PositiveSmallIntegerField(
-#         default=0, min_value=-1, max_value=1)
-#     comment_id = models.ForeignKey(Comment, on_delete=model.CASCADE,)
-#     resource_id = models.ForeignKey(Resource, on_delete=model.CASCADE,)
-#     user_id = models.ForeignKey(
-#         settings.AUTH_USER_MODEL,
-#         on_delete=models.CASCADE,
-#     )
-
-#     class Meta:
-#         unique_together = ['comment_id', 'resource_id', 'user_id']
