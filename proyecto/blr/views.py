@@ -1,6 +1,8 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
+from django.views.generic.detail import DetailView
+from django.views.generic.list import ListView
 
 from django.shortcuts import render
 from .forms import ResourceForm
@@ -26,6 +28,23 @@ class ResourceUpdate(UpdateView):
 class ResourceDelete(DeleteView):
     model = Resource
     success_url = reverse_lazy('index')
+
+class ResourceList(ListView):
+    model = Resource
+    paginate_by = 20
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # context['now'] = timezone.now()
+        return context
+
+class ResourceDetail(DetailView):
+    model = Resource
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # context['now'] = timezone.now()
+        return context
 
 
 def index(request):

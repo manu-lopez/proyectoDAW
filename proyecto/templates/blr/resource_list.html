@@ -1,0 +1,31 @@
+{% extends 'blr/base.html' %}
+{% block content %}
+<h1>Resources</h1>
+<div class="container">
+  <div class="card-deck mb-3 text-center">
+    {% for resource in object_list %}
+    <div class="card mb-4 shadow-sm">
+      <img class="card-img-top img-rounded  center" src="{{ resource.resource_image.url }}"
+        alt="{{resource.resource_name}} image">
+      <div class="card-header">
+        <a href="/resource/{{ resource.pk }}">
+          <h4 class="my-0 font-weight-normal">{{resource.resource_name}}</h4>
+        </a>
+      </div>
+      <div class="card-body">
+        <p class="card-text">
+          {% if resource.resource_description|length > 150 %}
+          {{resource.resource_description|truncatechars:100}}
+          {% else %}
+          {{resource.resource_description}}
+          {% endif %}
+        </p>
+        <a href="#" class="btn btn-info">Check</a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+</div>
+
+{% endblock %}

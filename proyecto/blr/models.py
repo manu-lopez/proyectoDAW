@@ -31,7 +31,7 @@ class Resource(models.Model):
     resource_name = models.CharField(max_length=100)
     resource_description = models.TextField()
     resource_author = models.CharField(max_length=50)
-    resource_image = models.ImageField(upload_to='media/resource_img/', blank=True, null=True)
+    resource_image = models.ImageField(upload_to='', default="default.png")
     resource_votes = models.IntegerField(default=0)
     resource_url = models.URLField()
     resource_price = models.DecimalField(
@@ -52,7 +52,7 @@ class Resource(models.Model):
         return self.resource_name
         
     def get_absolute_url(self):
-        return reverse_lazy('index')
+        return reverse_lazy('resource-list')
         # return reverse ('resource-detail', kwargs={'pk':self.pk})
 
 class Comment(models.Model):
