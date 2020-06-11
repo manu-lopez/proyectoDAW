@@ -31,7 +31,7 @@ class Resource(models.Model):
     resource_name = models.CharField(max_length=100)
     resource_description = models.TextField()
     resource_author = models.CharField(max_length=50)
-    resource_image = models.ImageField(upload_to='', default="default.png")
+    resource_image = models.ImageField(default="default.png")
     resource_votes = models.IntegerField(default=0)
     resource_url = models.URLField()
     resource_price = models.DecimalField(
@@ -45,6 +45,7 @@ class Resource(models.Model):
         blank=True,
         null=True,
     )
+    # resource_slug = models.SlugField(unique=True, max_length=100)
     resource_tags = TaggableManager()
     resource_type = models.ForeignKey(Type, on_delete=models.CASCADE,)
 

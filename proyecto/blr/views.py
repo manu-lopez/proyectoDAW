@@ -7,6 +7,8 @@ from django.views.generic.list import ListView
 from django.shortcuts import render
 from .forms import ResourceForm
 from .models import Resource
+
+from .filters import ResourceFilter
 # Create your views here.
 
 class ResourceCreate(LoginRequiredMixin, CreateView):
@@ -33,18 +35,20 @@ class ResourceList(ListView):
     model = Resource
     paginate_by = 20
 
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # context['now'] = timezone.now()
+        context['filter'] = ResourceFilter(self.request.GET, queryset=self.get_queryset())
+
         return context
 
 class ResourceDetail(DetailView):
     model = Resource
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # context['now'] = timezone.now()
-        return context
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     # context['now'] = timezone.now()
+    #     return context
 
 
 def index(request):
