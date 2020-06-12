@@ -4,8 +4,9 @@ from . import views
 urlpatterns = [
     path('', views.ResourceList.as_view(), name='resource-list'),
     path('create/', views.ResourceCreate.as_view(), name='create'),
-    path('resource/<int:pk>/update', views.ResourceUpdate.as_view(), name='update'),
-    path('resource/<int:pk>/delete/', views.ResourceDelete.as_view(), name='delete'),
-    path('resource/<int:pk>/', views.ResourceDetail.as_view(), name='resource-detail'),
+    path('resource/<slug:slug>/', views.ResourceDetail.as_view(), name='resource-detail'),
+    path('resource/<slug:slug>/update', views.ResourceUpdate.as_view(), name='update'),
+    path('resource/<slug:slug>/delete/', views.ResourceDelete.as_view(), name='delete'),
+    path('tag/<slug:slug>/', views.tagged.as_view(), name="tagged"),
 ]
 

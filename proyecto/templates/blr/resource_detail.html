@@ -1,6 +1,5 @@
 {% extends 'blr/base.html' %}
 {% load crispy_forms_tags %}
-
 {% block content %}
 
 <div class="card promoting-card mt-5">
@@ -21,7 +20,7 @@
   <div class="card-body">
     <p class="card-text">{{object.resource_description}}</p>
     {% for tag in object.resource_tags.all %}
-    <a href="{#}" class="badge badge-info">{{ tag }}</a>
+    <a href="{% url 'tagged' tag.slug %}" class="badge badge-info">{{ tag }}</a>
     {% endfor %}
     <p class="card-text"><i class="fas fa-user-alt"></i> {{object.resource_author}}</p>
     <a href="{{object.resource_url}}">

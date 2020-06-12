@@ -5,6 +5,7 @@ from django.utils.translation import gettext_lazy as _
 
 class ResourceFilter(django_filters.FilterSet):
 
+# Renombramos label
   def __init__(self, *args, **kwargs):
         super(ResourceFilter, self).__init__(*args, **kwargs)
         self.filters['resource_name'].label = _("")

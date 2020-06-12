@@ -45,7 +45,7 @@ class Resource(models.Model):
         blank=True,
         null=True,
     )
-    # resource_slug = models.SlugField(unique=True, max_length=100)
+    resource_slug = models.SlugField(unique=True, max_length=100)
     resource_tags = TaggableManager()
     resource_type = models.ForeignKey(Type, on_delete=models.CASCADE,)
 
@@ -53,6 +53,7 @@ class Resource(models.Model):
         return self.resource_name
         
     def get_absolute_url(self):
+        # return reverse('resource-list', args=[resource.resource_slug])
         return reverse_lazy('resource-list')
         # return reverse ('resource-detail', kwargs={'pk':self.pk})
 
