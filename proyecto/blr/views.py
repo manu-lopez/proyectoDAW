@@ -4,18 +4,70 @@ from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 
-from django.shortcuts import render, get_object_or_404
-from .forms import ResourceForm
+from django.shortcuts import render, get_object_or_404, redirect
+from .forms import ResourceForm, CreateUserForm
 from .models import Resource
 
+# Tags imports
 from taggit.models import Tag
 from django.template.defaultfilters import slugify
 
+# Search imports
 from .filters import ResourceFilter
-# Create your views here.
+
+# Custom login and register
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
+
+# Register view
+def registerPage(request):
+    form = CreateUserForm()
+
+    if request.user.is_authenticated:
+        return redirect('resource-list')
+    else:
+        if request.method == 'POST':
+            form = CreateUserForm(request.POST)
+            if form.is_valid():
+                form.save()
+                user = form.cleaned_data.get('username')
+                messages.success(request, "Account was created for " + user)
+                return redirect('login')
+
+    context = {'loginForm' : form}
+    return render(request, 'blr/register.html', context)
+
+# Login view
+def loginPage(request):
+
+    if request.user.is_authenticated:
+            return redirect('resource-list')
+    else:
+        if request.method == 'POST':
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+
+            user = authenticate(request, username=username, password=password)
+
+            if user is not None:
+                login(request, user)
+                return redirect('resource-list')
+            else:
+                # Volver a rellenar con mismo usuario
+                messages.info(request, 'Incorrect username or password')
+            
+    context = {}
+    return render(request, 'blr/login.html', context)
+
+def logoutUser(request):
+    logout(request)
+    return redirect('login')
 
 # Formulario creacion recurso
 class ResourceCreate(LoginRequiredMixin, CreateView):
+    login_url = '/login/'
+    redirect_field_name = 'redirect_to'
     form_class = ResourceForm
     template_name = "blr/resource_create.html"
 
