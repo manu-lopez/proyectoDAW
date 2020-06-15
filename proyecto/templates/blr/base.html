@@ -35,7 +35,7 @@
         </li> -->
       </ul>
       <ul class="navbar-nav ml-auto mx-auto">
-        {% if  request.path != '/login/' and request.path != '/register/' %}
+        {% if  request.path != '/login/' and request.path != '/register/' and request.path != '/user/' %}
         <form method="get" action="{% url 'resource-list' %}">
           {{ search.form }}
           <button class="btn btn-outline-info" type="submit">Search</button>
@@ -48,12 +48,13 @@
           <a href="{% url 'create' %}"><button class="btn btn-success mx-2">Add</button></a>
         </li>
         <li class="nav-item">
-          Hello, {{request.user}}<a class="nav-link" href="{% url 'logout' %}"><span>logout</span></a>
+          Hello, <a href="{% url 'userPage' %}">{{request.user}}</a><a class="nav-link"
+            href="{% url 'logout' %}"><span>logout</span></a>
         </li>
         {% else %}
-        <a href="{% url 'login' %}"><button class="btn btn-primary mx-2">Login</button></>
-          <a href="{% url 'register' %}"><button class="btn btn-primary mx-2">span</button></a>
-          {% endif %}
+        <a href="{% url 'login' %}"><button class="btn btn-primary mx-2">Login</button></a>
+        <a href="{% url 'register' %}"><button class="btn btn-primary mx-2">Register</button></a>
+        {% endif %}
       </ul>
     </div>
   </nav>

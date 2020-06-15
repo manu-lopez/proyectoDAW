@@ -5,7 +5,8 @@ from django.core.validators import MaxValueValidator
 from django.urls import reverse_lazy
 from taggit.managers import TaggableManager
 
-# Create your models here.
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 # Extending the existing user model to add
@@ -13,11 +14,19 @@ from taggit.managers import TaggableManager
 # Reference: https://bit.ly/3f0TeWp
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    resources = models.ManyToManyField('Resource')
-    comments = models.ManyToManyField('Comment')
-
+    profile_pic = models.ImageField(default="profile1.png", null=True, blank=True)
+    
     def __str__(self):
-        return self.user
+        return self.user.username
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()
 
 
 class Type(models.Model):
@@ -39,12 +48,13 @@ class Resource(models.Model):
     resource_discount = models.PositiveSmallIntegerField(
         default=0, validators=[MaxValueValidator(100)])
     resource_creation_date = models.DateField(auto_now_add=True)
-    post_author = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.SET_NULL,
-        blank=True,
-        null=True,
-    )
+    # post_author = models.ForeignKey(
+    #     settings.AUTH_USER_MODEL,
+    #     on_delete=models.SET_NULL,
+    #     blank=True,
+    #     null=True,
+    # )
+    post_author = models.ForeignKey(Profile, null=True, on_delete=models.SET_NULL)
     resource_slug = models.SlugField(unique=True, max_length=100)
     resource_tags = TaggableManager()
     resource_type = models.ForeignKey(Type, on_delete=models.CASCADE,)

@@ -5,9 +5,6 @@
 <h3>Register</h3>
 <form method="POST">{% csrf_token %}
   {{ loginForm.username|as_crispy_field }}
-  {{ loginForm.first_name|as_crispy_field }}
-  {{ loginForm.last_name|as_crispy_field }}
-  {{ loginForm.email|as_crispy_field }}
   {{ loginForm.password1|as_crispy_field }}
   {{ loginForm.password2|as_crispy_field }}
   <input type="submit" value="Create">

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Profile, Resource, Comment, Type
+from .models import Resource, Comment, Type, Profile
 
 # Register your models here.
 

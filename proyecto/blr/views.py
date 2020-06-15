@@ -5,7 +5,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 
 from django.shortcuts import render, get_object_or_404, redirect
-from .forms import ResourceForm, CreateUserForm
+from .forms import ResourceForm, CreateUserForm, UserForm
 from .models import Resource
 
 # Tags imports
@@ -30,9 +30,9 @@ def registerPage(request):
         if request.method == 'POST':
             form = CreateUserForm(request.POST)
             if form.is_valid():
-                form.save()
-                user = form.cleaned_data.get('username')
-                messages.success(request, "Account was created for " + user)
+                user = form.save()
+                username = form.cleaned_data.get('username')
+                messages.success(request, "Account was created for " + username)
                 return redirect('login')
 
     context = {'loginForm' : form}
@@ -60,9 +60,24 @@ def loginPage(request):
     context = {}
     return render(request, 'blr/login.html', context)
 
+# Logout view
 def logoutUser(request):
     logout(request)
     return redirect('login')
+
+# UserPage view
+def userPage(request):
+    user = request.user.profile
+    resources = request.user.profile.resource_set.all()
+    form = UserForm(instance=user)
+
+    if request.method == 'POST':
+        form = UserForm(request.POST, request.FILES, instance=user)
+        if form.is_valid():
+            form.save()
+    
+    context = {'resources': resources, 'form': form}
+    return render(request, 'blr/user.html', context)
 
 # Formulario creacion recurso
 class ResourceCreate(LoginRequiredMixin, CreateView):
@@ -70,7 +85,7 @@ class ResourceCreate(LoginRequiredMixin, CreateView):
     redirect_field_name = 'redirect_to'
     form_class = ResourceForm
     template_name = "blr/resource_create.html"
-
+    
     # Set logged user as creator of the resource
     def form_valid(self, form):
         form.instance.post_author = self.request.user
@@ -81,7 +96,7 @@ class ResourceCreate(LoginRequiredMixin, CreateView):
 # Solo puede modificar autor 
 class ResourceUpdate(UpdateView):
     # get object or 404 -> mirar
-    # model = Resource
+    model = Resource
     form_class = ResourceForm
     template_name = "blr/resource_modify.html"
     slug_url_kwarg = 'slug'
@@ -90,7 +105,7 @@ class ResourceUpdate(UpdateView):
 # En construccion
 class ResourceDelete(DeleteView):
     model = Resource
-    success_url = reverse_lazy('index')
+    success_url = reverse_lazy('resource-list')
     slug_url_kwarg = 'slug'
     slug_field = 'resource_slug'
 
@@ -128,7 +143,6 @@ class tagged(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         tag = get_object_or_404(Tag, slug=self.kwargs.get('slug'))
-        print(tag)
         context['search'] = ResourceFilter(self.request.GET, queryset=self.get_queryset())
         context['resource_tagged'] = Resource.objects.filter(resource_tags=tag)
         context['all_tags'] = Resource.resource_tags.all()

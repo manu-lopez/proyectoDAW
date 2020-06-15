@@ -27,6 +27,12 @@
       <p class="card-text"><i class="fas fa-external-link-alt"></i></i> Website</p>
     </a>
   </div>
-</div>
 
+  {% if request.user.profile == object.post_author %}
+  <div class="card-footer">
+    <a href="{% url 'update' object.resource_slug %}"><button class="btn btn-outline-primary">Update</button></a>
+    <a href="{% url 'delete' object.resource_slug %}"><button class="btn btn-outline-danger">Delete</button></a>
+  </div>
+  {% endif %}
+</div>
 {% endblock %}

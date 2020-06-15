@@ -132,3 +132,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
 
 # CrispyFrom
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+
+# Taggit
+# TAGGIT_CASE_INSENSITIVE = True

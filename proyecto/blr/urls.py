@@ -6,6 +6,7 @@ urlpatterns = [
     path('login/', views.loginPage, name='login'),
     path('logout/', views.logoutUser, name='logout'),
     path('register/', views.registerPage, name='register'),
+    path('user/', views.userPage, name='userPage'),
     path('create/', views.ResourceCreate.as_view(), name='create'),
     path('resource/<slug:slug>/', views.ResourceDetail.as_view(), name='resource-detail'),
     path('resource/<slug:slug>/update', views.ResourceUpdate.as_view(), name='update'),
