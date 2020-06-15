@@ -17,13 +17,13 @@
       <form method="POST" action="" enctype="multipart/form-data">
         {% csrf_token %}
         {{form|crispy}}
-        <input class="btn btn-primary" type="submit" name="Update Information">
+        <button type="submit" class="save btn btn-success">Save</button>
       </form>
     </div>
   </div>
 </div>
 
-<h1>Resources</h1>
+<h1>Resources created</h1>
 <div class="row text-center">
   {% for resource in resources %}
   <div class="col-6 col-sm-4 col-md-3">

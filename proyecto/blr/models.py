@@ -41,20 +41,14 @@ class Resource(models.Model):
     resource_description = models.TextField()
     resource_author = models.CharField(max_length=50)
     resource_image = models.ImageField(default="default.png")
-    resource_votes = models.IntegerField(default=0)
+    resource_votes = models.ManyToManyField(Profile, related_name='votes', blank=True)
     resource_url = models.URLField()
     resource_price = models.DecimalField(
         default=0, max_digits=4, decimal_places=2)
     resource_discount = models.PositiveSmallIntegerField(
         default=0, validators=[MaxValueValidator(100)])
     resource_creation_date = models.DateField(auto_now_add=True)
-    # post_author = models.ForeignKey(
-    #     settings.AUTH_USER_MODEL,
-    #     on_delete=models.SET_NULL,
-    #     blank=True,
-    #     null=True,
-    # )
-    post_author = models.ForeignKey(Profile, null=True, on_delete=models.SET_NULL)
+    post_author = models.ForeignKey(Profile, related_name='post_author', null=True, on_delete=models.SET_NULL)
     resource_slug = models.SlugField(unique=True, max_length=100)
     resource_tags = TaggableManager()
     resource_type = models.ForeignKey(Type, on_delete=models.CASCADE,)
@@ -66,6 +60,7 @@ class Resource(models.Model):
         # return reverse('resource-list', args=[resource.resource_slug])
         return reverse_lazy('resource-list')
         # return reverse ('resource-detail', kwargs={'pk':self.pk})
+
 
 class Comment(models.Model):
     comment_id = models.AutoField(primary_key=True)

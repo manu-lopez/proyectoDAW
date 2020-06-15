@@ -1,3 +1,4 @@
+from django.http import HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
@@ -19,6 +20,10 @@ from .filters import ResourceFilter
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+
+# Custom 404
+def error_404(request, exception):
+    return render(request,'blr/404.html', status = 404)
 
 # Register view
 def registerPage(request):
@@ -88,7 +93,7 @@ class ResourceCreate(LoginRequiredMixin, CreateView):
     
     # Set logged user as creator of the resource
     def form_valid(self, form):
-        form.instance.post_author = self.request.user
+        form.instance.post_author = self.request.user.profile
         form.instance.resource_slug = slugify(form.instance.resource_name)
         return super().form_valid(form)
 
@@ -121,14 +126,30 @@ class ResourceDelete(DeleteView):
 # Muestra todos los recursos
 class ResourceList(ListView):
     model = Resource
+    is_liked = False
     # paginate_by = 20
+
+    def is_liked(self):
+        # original qs
+        qs = super().get_queryset() 
+        resources = qs.filter(resource_votes=self.request.user.profile.id)
+        lista = []
+        for r in resources:
+            print(r.id)
+            lista.append(r.id)
+        # if resource.resource_votes.filter(id=request.user.profile.id).exists():
+        #     is_liked = True
+        
+        return lista
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # context['common_tags'] = Resource.resource_tags.most_common()[:4]
+
+        # if Resource.resource_votes.all():
+        # context['is_liked'] = Resource.objects.filter(resource_votes=self.request.user.profile.id)
+        context['is_liked'] = self.is_liked()
         context['all_tags'] = Resource.resource_tags.all()
         context['search'] = ResourceFilter(self.request.GET, queryset=self.get_queryset())
-
         return context
 
 # Muestra el recuso en detalle
@@ -156,3 +177,12 @@ class tagged(ListView):
         context['all_tags'] = Resource.resource_tags.all()
 
         return context
+
+def like_resource(request):
+    resource = get_object_or_404(Resource, id=request.POST.get('resource_id'))
+    if resource.resource_votes.filter(id=request.user.profile.id).exists():
+        resource.resource_votes.remove(request.user.profile)
+    else:
+        resource.resource_votes.add(request.user.profile)
+
+    return HttpResponseRedirect(resource.get_absolute_url())
