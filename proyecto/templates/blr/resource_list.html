@@ -27,6 +27,9 @@
   <div class="row text-center">
     {% for resource in search.qs %}
     <div class="col-6 col-sm-4 col-md-3">
+      <div class="card-header">
+        {{ resource.resource_votes }}
+      </div>
       <div class="card mb-4">
         <img class="card-img-top img-rounded center" src="{{ resource.resource_image.url }}"
           alt="{{resource.resource_name}} image">
@@ -43,6 +46,10 @@
             {{resource.resource_description}}
             {% endif %}
           </p>
+        </div>
+        <div class="card-footer">
+          <a href="#"><button class="btn btn-outline-success"> + </button></a>
+          <a href="#"><button class="btn btn-outline-danger"> - </button></a>
         </div>
       </div>
     </div>

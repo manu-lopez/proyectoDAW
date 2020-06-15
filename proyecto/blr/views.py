@@ -102,12 +102,20 @@ class ResourceUpdate(UpdateView):
     slug_url_kwarg = 'slug'
     slug_field = 'resource_slug'
 
+    def get_queryset(self):
+        qs = super(ResourceUpdate, self).get_queryset()
+        return qs.filter(post_author=self.request.user.profile)
+
 # En construccion
 class ResourceDelete(DeleteView):
     model = Resource
     success_url = reverse_lazy('resource-list')
     slug_url_kwarg = 'slug'
     slug_field = 'resource_slug'
+
+    def get_queryset(self):
+        qs = super(ResourceDelete, self).get_queryset()
+        return qs.filter(post_author=self.request.user.profile)
 
 
 # Muestra todos los recursos
