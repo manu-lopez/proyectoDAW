@@ -137,6 +137,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'resource-list'
 
 PROFILE_APP_NAME = 'blr'
 PROFILE_MODEL_NAME = 'Profile'

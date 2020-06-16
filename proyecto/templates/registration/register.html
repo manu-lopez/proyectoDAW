@@ -7,7 +7,7 @@
   {{ loginForm.username|as_crispy_field }}
   {{ loginForm.password1|as_crispy_field }}
   {{ loginForm.password2|as_crispy_field }}
-  <input type="submit" value="Create">
+  <button class="btn btn-lg btn-primary btn-block" type="submit">Create</button>
 </form>
 
 <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>

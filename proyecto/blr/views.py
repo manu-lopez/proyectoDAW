@@ -21,6 +21,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 
+from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView, PasswordResetView
+
 # Custom 404
 def error_404(request, exception):
     return render(request,'blr/404.html', status = 404)
@@ -41,34 +43,18 @@ def registerPage(request):
                 return redirect('login')
 
     context = {'loginForm' : form}
-    return render(request, 'blr/register.html', context)
+    return render(request, 'registration/register.html', context)
 
 # Login view
-def loginPage(request):
-
-    if request.user.is_authenticated:
-            return redirect('resource-list')
-    else:
-        if request.method == 'POST':
-            username = request.POST.get('username')
-            password = request.POST.get('password')
-
-            user = authenticate(request, username=username, password=password)
-
-            if user is not None:
-                login(request, user)
-                return redirect('resource-list')
-            else:
-                # Volver a rellenar con mismo usuario
-                messages.info(request, 'Incorrect username or password')
-            
-    context = {}
-    return render(request, 'blr/login.html', context)
+class loginView(LoginView):
+    redirect_authenticated_user = True
 
 # Logout view
-def logoutUser(request):
-    logout(request)
-    return redirect('login')
+class logoutView(LogoutView):
+    next_page = 'login'
+
+class changePassword(PasswordChangeView):
+    success_url = 'userPage'
 
 # UserPage view
 def userPage(request):

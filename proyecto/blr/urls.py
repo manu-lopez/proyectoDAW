@@ -3,10 +3,11 @@ from . import views
 
 urlpatterns = [
     path('', views.ResourceList.as_view(), name='resource-list'),
-    path('login/', views.loginPage, name='login'),
-    path('logout/', views.logoutUser, name='logout'),
+    path('login/', views.loginView.as_view(), name='login'),
+    path('logout/', views.logoutView.as_view(), name='logout'),
     path('register/', views.registerPage, name='register'),
     path('user/', views.userPage, name='userPage'),
+    path('user/changePassword', views.PasswordChangeView.as_view(), name='changePassword'),
     path('create/', views.ResourceCreate.as_view(), name='create'),
     path('vote/', views.vote_resource, name='vote_resource'),
     path('save/', views.save_resource, name='save_resource'),
