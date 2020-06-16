@@ -41,7 +41,7 @@ class Resource(models.Model):
     resource_description = models.TextField()
     resource_author = models.CharField(max_length=50)
     resource_image = models.ImageField(default="default.png")
-    resource_votes = models.ManyToManyField(Profile, related_name='votes', blank=True)
+    user_saved = models.ManyToManyField(Profile, related_name='votes', blank=True)
     resource_url = models.URLField()
     resource_price = models.DecimalField(
         default=0, max_digits=4, decimal_places=2)

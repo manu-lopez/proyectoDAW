@@ -126,28 +126,21 @@ class ResourceDelete(DeleteView):
 # Muestra todos los recursos
 class ResourceList(ListView):
     model = Resource
-    is_liked = False
     # paginate_by = 20
 
-    def is_liked(self):
-        # original qs
+    def is_saved(self):
         qs = super().get_queryset() 
-        resources = qs.filter(resource_votes=self.request.user.profile.id)
+        resources = qs.filter(user_saved=self.request.user.profile.id)
         lista = []
         for r in resources:
             print(r.id)
             lista.append(r.id)
-        # if resource.resource_votes.filter(id=request.user.profile.id).exists():
-        #     is_liked = True
-        
+
         return lista
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
-        # if Resource.resource_votes.all():
-        # context['is_liked'] = Resource.objects.filter(resource_votes=self.request.user.profile.id)
-        context['is_liked'] = self.is_liked()
+        context['is_saved'] = self.is_saved()
         context['all_tags'] = Resource.resource_tags.all()
         context['search'] = ResourceFilter(self.request.GET, queryset=self.get_queryset())
         return context
@@ -178,11 +171,11 @@ class tagged(ListView):
 
         return context
 
-def like_resource(request):
+def save_resource(request):
     resource = get_object_or_404(Resource, id=request.POST.get('resource_id'))
-    if resource.resource_votes.filter(id=request.user.profile.id).exists():
-        resource.resource_votes.remove(request.user.profile)
+    if resource.user_saved.filter(id=request.user.profile.id).exists():
+        resource.user_saved.remove(request.user.profile)
     else:
-        resource.resource_votes.add(request.user.profile)
+        resource.user_saved.add(request.user.profile)
 
     return HttpResponseRedirect(resource.get_absolute_url())

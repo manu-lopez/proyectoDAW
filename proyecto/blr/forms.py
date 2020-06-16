@@ -15,7 +15,7 @@ class ResourceForm(ModelForm):
   
   class Meta: 
     model = Resource
-    exclude = ['resource_votes', 'post_author', 'resource_slug']
+    exclude = ['user_saved', 'post_author', 'resource_slug']
     labels = {
       'resource_tags': _('Resource tags')
     }
