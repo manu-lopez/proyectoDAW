@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+from django.utils.translation import gettext_lazy as _
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -33,6 +34,7 @@ ALLOWED_HOSTS = ['*']
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
+    'comment',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -134,6 +136,17 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
 # CrispyFrom
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
+LOGIN_URL = 'login'
+
+PROFILE_APP_NAME = 'blr'
+PROFILE_MODEL_NAME = 'Profile'
+
+COMMENT_FLAGS_ALLOWED = 1
+COMMENT_FLAG_REASONS = [
+    (1, _('Spam')),
+    (2, _('Abusive')),
+    (3, _('Racist')),
+]
 
 # Taggit
 # TAGGIT_CASE_INSENSITIVE = True

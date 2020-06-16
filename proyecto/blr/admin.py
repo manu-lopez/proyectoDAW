@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Resource, Comment, Type, Profile
+from .models import Resource, Type, Profile
 
 # Register your models here.
 
@@ -9,5 +9,5 @@ class ResourceAdmin(admin.ModelAdmin):
 
 admin.site.register(Profile)
 admin.site.register(Resource, ResourceAdmin)
-admin.site.register(Comment)
+# admin.site.register(Comment)
 admin.site.register(Type)

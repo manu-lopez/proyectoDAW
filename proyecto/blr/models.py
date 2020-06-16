@@ -8,6 +8,9 @@ from vote.models import VoteModel
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+from django.contrib.contenttypes.fields import GenericRelation
+from comment.models import Comment
+from django.urls import reverse
 
 # Extending the existing user model to add
 # n:m relations
@@ -18,6 +21,9 @@ class Profile(models.Model):
     
     def __str__(self):
         return self.user.username
+
+    def get_absolute_url(self):
+        return reverse('userPage')
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
@@ -53,6 +59,7 @@ class Resource(VoteModel, models.Model):
     resource_tags = TaggableManager()
     resource_type = models.ForeignKey(Type, on_delete=models.CASCADE,)
     resource_stars = models.IntegerField(default=0)
+    comments = GenericRelation(Comment)
 
     def __str__(self):
         return self.resource_name
@@ -63,20 +70,20 @@ class Resource(VoteModel, models.Model):
         # return reverse ('resource-detail', kwargs={'pk':self.pk})
 
 
-class Comment(models.Model):
-    comment_id = models.AutoField(primary_key=True)
-    comment_text = models.TextField()
-    comment_date = models.DateField(auto_now_add=True)
-    comment_votes = models.IntegerField(default=0)
-    resource_id = models.ForeignKey(Resource, on_delete=models.CASCADE,)
-    comment_author = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.SET_NULL,
-        null=True,
-    )
+# class Comment(models.Model):
+#     comment_id = models.AutoField(primary_key=True)
+#     comment_text = models.TextField()
+#     comment_date = models.DateField(auto_now_add=True)
+#     comment_votes = models.IntegerField(default=0)
+#     resource_id = models.ForeignKey(Resource, on_delete=models.CASCADE,)
+#     comment_author = models.ForeignKey(
+#         settings.AUTH_USER_MODEL,
+#         on_delete=models.SET_NULL,
+#         null=True,
+#     )
 
-    class Meta:
-        unique_together = ['comment_id', 'resource_id']
+#     class Meta:
+#         unique_together = ['comment_id', 'resource_id']
 
-    def __str__(self):
-        return self.comment_text[:15]+"..."
+#     def __str__(self):
+#         return self.comment_text[:15]+"..."

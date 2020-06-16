@@ -1,5 +1,7 @@
 {% extends 'blr/base.html' %}
 {% load crispy_forms_tags %}
+{% load comment_tags %}
+
 {% block content %}
 
 <div class="card promoting-card mt-5">
@@ -35,4 +37,6 @@
   </div>
   {% endif %}
 </div>
+
+{% render_comments object request comments_per_page=5 %}
 {% endblock %}
