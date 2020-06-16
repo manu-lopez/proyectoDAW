@@ -72,8 +72,9 @@ def logoutUser(request):
 
 # UserPage view
 def userPage(request):
+    resources = request.user.profile.post_author.all()
+    favorited = request.user.profile.votes.all()
     user = request.user.profile
-    resources = request.user.profile.resource_set.all()
     form = UserForm(instance=user)
 
     if request.method == 'POST':
@@ -81,7 +82,7 @@ def userPage(request):
         if form.is_valid():
             form.save()
     
-    context = {'resources': resources, 'form': form}
+    context = {'resources': resources, 'favorited':favorited, 'form': form}
     return render(request, 'blr/user.html', context)
 
 # Formulario creacion recurso
