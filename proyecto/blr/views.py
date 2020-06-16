@@ -97,7 +97,7 @@ class ResourceCreate(LoginRequiredMixin, CreateView):
         form.instance.resource_slug = slugify(form.instance.resource_name)
         return super().form_valid(form)
 
-# En construccion
+
 # Solo puede modificar autor 
 class ResourceUpdate(UpdateView):
     # get object or 404 -> mirar
@@ -111,7 +111,7 @@ class ResourceUpdate(UpdateView):
         qs = super(ResourceUpdate, self).get_queryset()
         return qs.filter(post_author=self.request.user.profile)
 
-# En construccion
+
 class ResourceDelete(DeleteView):
     model = Resource
     success_url = reverse_lazy('resource-list')
@@ -133,16 +133,30 @@ class ResourceList(ListView):
         resources = qs.filter(user_saved=self.request.user.profile.id)
         lista = []
         for r in resources:
-            print(r.id)
+            # print("------->",r.num_vote_up + r.num_vote_down)
             lista.append(r.id)
-
         return lista
+
+    def get_all_votes(self):
+        qs = super().get_queryset()
+        stars=[]
+        for resource in qs:
+            total_votes = resource.num_vote_down + resource.num_vote_up
+            stars.append(round((resource.num_vote_up * 5)/total_votes))
+
+        print("----->", stars)
+        return stars
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['is_saved'] = self.is_saved()
+        if self.request.user.is_authenticated:
+            context['is_saved'] = self.is_saved()
         context['all_tags'] = Resource.resource_tags.all()
         context['search'] = ResourceFilter(self.request.GET, queryset=self.get_queryset())
+        # if Resource.votes.count() > 0:
+        # context['checked_stars'] = range(0, Resource.resource_stars)
+        # context['unchecked_stars'] = range(0, 5 - Resource.resource_stars)
+
         return context
 
 # Muestra el recuso en detalle
@@ -161,21 +175,66 @@ class ResourceDetail(DetailView):
 class tagged(ListView):
     model = Resource
     template_name = "blr/resource_list_tagged.html"
+    
+    def is_saved(self):
+        qs = super().get_queryset() 
+        resources = qs.filter(user_saved=self.request.user.profile.id)
+        lista = []
+        for r in resources:
+            lista.append(r.id)
+
+        return lista
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         tag = get_object_or_404(Tag, slug=self.kwargs.get('slug'))
+        if self.request.user.is_authenticated:
+            context['is_saved'] = self.is_saved()
         context['search'] = ResourceFilter(self.request.GET, queryset=self.get_queryset())
         context['resource_tagged'] = Resource.objects.filter(resource_tags=tag)
         context['all_tags'] = Resource.resource_tags.all()
 
         return context
 
+# Guarda como favorito el recurso
 def save_resource(request):
     resource = get_object_or_404(Resource, id=request.POST.get('resource_id'))
     if resource.user_saved.filter(id=request.user.profile.id).exists():
         resource.user_saved.remove(request.user.profile)
     else:
         resource.user_saved.add(request.user.profile)
+
+    return HttpResponseRedirect(resource.get_absolute_url())
+
+# Vota el recurso
+def vote_resource(request):
+
+    if 'upvote' in request.POST:
+        rid=request.POST.get('upvote')
+        resource = get_object_or_404(Resource, id=rid)
+        resource.votes.up(request.user.profile.id)
+
+        total_votes = resource.num_vote_down + resource.num_vote_up
+        if total_votes == 0:
+            resource.resource_stars = 5
+
+    elif 'downvote' in request.POST:
+        rid=request.POST.get('downvote')
+        resource = get_object_or_404(Resource, id=rid)
+        resource.votes.down(request.user.profile.id)
+
+        total_votes = resource.num_vote_down + resource.num_vote_up
+        if total_votes == 0:
+            resource.resource_stars = 0
+
+    after_vote_resource = get_object_or_404(Resource, id=rid)
+    total_votes = after_vote_resource.num_vote_down + after_vote_resource.num_vote_up
+    print("Total -------->",total_votes)
+    print("Up -------->",a.num_vote_up)
+    print("Down -------->",a.num_vote_down)
+    if total_votes > 0:
+        resource.resource_stars = round((after_vote_resource.num_vote_up * 5)/total_votes)
+    
+    resource.save(update_fields=['resource_stars'])
 
     return HttpResponseRedirect(resource.get_absolute_url())

@@ -8,6 +8,7 @@ urlpatterns = [
     path('register/', views.registerPage, name='register'),
     path('user/', views.userPage, name='userPage'),
     path('create/', views.ResourceCreate.as_view(), name='create'),
+    path('vote/', views.vote_resource, name='vote_resource'),
     path('save/', views.save_resource, name='save_resource'),
     path('resource/<slug:slug>/', views.ResourceDetail.as_view(), name='resource-detail'),
     path('resource/<slug:slug>/update', views.ResourceUpdate.as_view(), name='update'),

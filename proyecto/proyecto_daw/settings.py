@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'taggit',
     'django_filters',
+    'vote',
 ]
 
 MIDDLEWARE = [

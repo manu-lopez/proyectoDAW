@@ -8,3 +8,7 @@ h1 {
   margin: 0 auto;
   border-radius: 50%;
 }
+
+.checked {
+  color: orange;
+}

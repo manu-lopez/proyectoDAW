@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator
 from django.urls import reverse_lazy
 from taggit.managers import TaggableManager
-
+from vote.models import VoteModel
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
@@ -36,7 +36,7 @@ class Type(models.Model):
         return self.type_name
 
 
-class Resource(models.Model):
+class Resource(VoteModel, models.Model):
     resource_name = models.CharField(max_length=100)
     resource_description = models.TextField()
     resource_author = models.CharField(max_length=50)
@@ -52,6 +52,7 @@ class Resource(models.Model):
     resource_slug = models.SlugField(unique=True, max_length=100)
     resource_tags = TaggableManager()
     resource_type = models.ForeignKey(Type, on_delete=models.CASCADE,)
+    resource_stars = models.IntegerField(default=0)
 
     def __str__(self):
         return self.resource_name

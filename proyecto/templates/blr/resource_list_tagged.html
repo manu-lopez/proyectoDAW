@@ -2,7 +2,6 @@
 {% load crispy_forms_tags %}
 {% block content %}
 
-
 <h1 class="text-center">Resources</h1>
 <div class="container">
   <p>Tags:
@@ -31,6 +30,21 @@
       <div class="card mb-4">
         <img class="card-img-top img-rounded center" src="{{ resource.resource_image.url }}"
           alt="{{resource.resource_name}} image">
+
+        <div class="card-header">
+          <p>Votes: {{ resource.votes.count }}</p>
+          {% if  user.is_authenticated  %}
+          <form action="{% url 'vote_resource' %}" method="post">{% csrf_token %}
+            <button class="btn btn-outline-success" type="submit" name="upvote" value="{{ resource.id }}"><i
+                class="fas fa-plus"></i>
+            </button>
+            <button class="btn btn-outline-danger" type="submit" name="downvote" value="{{ resource.id }}"><i
+                class="fas fa-minus"></i>
+            </button>
+          </form>
+          {% endif %}
+
+        </div>
         <div class="card-header">
           <a href="{% url 'resource-detail' resource.resource_slug %}">
             <h4 class="my-0 font-weight-normal">{{resource.resource_name}}</h4>
@@ -44,8 +58,26 @@
             {{resource.resource_description}}
             {% endif %}
           </p>
-
         </div>
+        <!-- <div class="card-footer">
+          <a href="#"><button class="btn btn-outline-success"> + </button></a>
+          <a href="#"><button class="btn btn-outline-danger"> - </button></a>
+        </div> -->
+        {% if  user.is_authenticated  %}
+        <div class="card-footer">
+          <form action="{% url 'save_resource' %}" method="post">{% csrf_token %}
+            {% if resource.id in is_saved %}
+            <button class="btn btn-outline-danger" type="submit" name="resource_id" value="{{ resource.id }}"><i
+                class="fas fa-star"></i>
+            </button>
+            {% else %}
+            <button class="btn btn-outline-success" type="submit" name="resource_id" value="{{ resource.id }}"><i
+                class="far fa-star"></i>
+            </button>
+            {% endif %}
+          </form>
+        </div>
+        {% endif %}
       </div>
     </div>
     {% endfor %}
