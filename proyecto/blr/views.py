@@ -139,8 +139,19 @@ class ResourceDetail(DetailView):
     slug_url_kwarg = 'slug'
     slug_field = 'resource_slug'
 
+    def is_saved(self):
+        qs = super().get_queryset() 
+        resources = qs.filter(user_saved=self.request.user.profile.id)
+        lista = []
+        for r in resources:
+            lista.append(r.id)
+        return lista
+
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        if self.request.user.is_authenticated:
+            context['is_saved'] = self.is_saved()
         context['search'] = ResourceFilter(self.request.GET, queryset=self.get_queryset())
         return context
 
@@ -177,7 +188,7 @@ def save_resource(request):
     else:
         resource.user_saved.add(request.user.profile)
 
-    return HttpResponseRedirect(resource.get_absolute_url())
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 # Vota el recurso
 def vote_resource(request):
@@ -207,4 +218,4 @@ def vote_resource(request):
     
     resource.save(update_fields=['resource_stars'])
 
-    return HttpResponseRedirect(resource.get_absolute_url())
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

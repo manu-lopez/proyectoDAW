@@ -62,10 +62,6 @@
             {% endif %}
           </p>
         </div>
-        <!-- <div class="card-footer">
-          <a href="#"><button class="btn btn-outline-success"> + </button></a>
-          <a href="#"><button class="btn btn-outline-danger"> - </button></a>
-        </div> -->
         {% if  user.is_authenticated  %}
         <div class="card-footer">
           <form action="{% url 'save_resource' %}" method="post">{% csrf_token %}
