@@ -32,13 +32,9 @@
           alt="{{resource.resource_name}} image">
 
         <div class="card-header">
-          {{ resource.resource_stars }}
-          {% for x in checked_stars %}
-          <span class="fa fa-star checked"></span>
-          {% endfor %}
-          {% for x in unchecked_stars %}
-          <span class="fa fa-star"></span>
-          {% endfor %}
+          <fieldset class="starability-result mx-auto" data-rating="{{ resource.resource_stars }}">
+            Rated: {{ resource.resource_stars }} stars
+          </fieldset>
 
           {% if  user.is_authenticated  %}
           <form action="{% url 'vote_resource' %}" method="post">{% csrf_token %}

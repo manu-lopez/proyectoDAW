@@ -32,7 +32,10 @@
           alt="{{resource.resource_name}} image">
 
         <div class="card-header">
-          <p>Votes: {{ resource.votes.count }}</p>
+          <fieldset class="starability-result mx-auto" data-rating="{{ resource.resource_stars }}">
+            Rated: {{ resource.resource_stars }} stars
+          </fieldset>
+
           {% if  user.is_authenticated  %}
           <form action="{% url 'vote_resource' %}" method="post">{% csrf_token %}
             <button class="btn btn-outline-success" type="submit" name="upvote" value="{{ resource.id }}"><i

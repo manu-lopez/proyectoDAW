@@ -133,19 +133,8 @@ class ResourceList(ListView):
         resources = qs.filter(user_saved=self.request.user.profile.id)
         lista = []
         for r in resources:
-            # print("------->",r.num_vote_up + r.num_vote_down)
             lista.append(r.id)
         return lista
-
-    def get_all_votes(self):
-        qs = super().get_queryset()
-        stars=[]
-        for resource in qs:
-            total_votes = resource.num_vote_down + resource.num_vote_up
-            stars.append(round((resource.num_vote_up * 5)/total_votes))
-
-        print("----->", stars)
-        return stars
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -153,9 +142,6 @@ class ResourceList(ListView):
             context['is_saved'] = self.is_saved()
         context['all_tags'] = Resource.resource_tags.all()
         context['search'] = ResourceFilter(self.request.GET, queryset=self.get_queryset())
-        # if Resource.votes.count() > 0:
-        # context['checked_stars'] = range(0, Resource.resource_stars)
-        # context['unchecked_stars'] = range(0, 5 - Resource.resource_stars)
 
         return context
 
@@ -229,9 +215,6 @@ def vote_resource(request):
 
     after_vote_resource = get_object_or_404(Resource, id=rid)
     total_votes = after_vote_resource.num_vote_down + after_vote_resource.num_vote_up
-    print("Total -------->",total_votes)
-    print("Up -------->",a.num_vote_up)
-    print("Down -------->",a.num_vote_down)
     if total_votes > 0:
         resource.resource_stars = round((after_vote_resource.num_vote_up * 5)/total_votes)
     
