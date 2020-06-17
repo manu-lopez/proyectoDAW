@@ -15,6 +15,8 @@ from django.template.defaultfilters import slugify
 
 # Search imports
 from .filters import ResourceSearch
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 
 # Custom login and register
 from django.contrib.auth.forms import UserCreationForm
@@ -113,7 +115,6 @@ class ResourceDelete(DeleteView):
 # Muestra todos los recursos
 class ResourceList(ListView):
     model = Resource
-    # paginate_by = 20
 
     def is_saved(self):
         qs = super().get_queryset() 
@@ -133,7 +134,21 @@ class ResourceList(ListView):
         if self.request.user.is_authenticated:
             context['is_saved'] = self.is_saved()
         context['all_tags'] = Resource.resource_tags.all()
-        context['search'] = ResourceSearch(self.request.GET, queryset=self.get_queryset())
+
+        # Pagination
+        filtered_qs = ResourceSearch(self.request.GET, queryset=self.get_queryset())
+        paginator = Paginator(filtered_qs.qs, 5)
+        page = self.request.GET.get('page')
+        try:
+            response = paginator.page(page)
+        except PageNotAnInteger:
+            response = paginator.page(1)
+        except EmptyPage:
+            response = paginator.page(paginator.num_pages)
+
+        context['search'] = filtered_qs
+        context['searchpagination'] = response
+        context['npages'] = range(1, response.paginator.num_pages+1)
 
         return context
 

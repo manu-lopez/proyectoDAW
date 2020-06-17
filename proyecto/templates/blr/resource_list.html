@@ -2,7 +2,6 @@
 {% load crispy_forms_tags %}
 {% load vote %}
 {% block content %}
-
 <h1 class="text-center">Resources</h1>
 <div class="container">
   <!-- Collapse with filter -->
@@ -34,7 +33,8 @@
     {% endfor %}
   </p>
   <div class="row text-center">
-    {% for resource in search.qs %}
+
+    {% for resource in searchpagination %}
 
     <!-- Comprobamos que ha votado el usuario -->
     {% vote_exists resource request.user 0 as vote_up %}
@@ -109,6 +109,29 @@
     {% endfor %}
   </div>
 </div>
-</div>
 
+<nav>
+  <ul class="pagination">
+    {% if searchpagination.has_previous %}
+    <li class="page-item"><a class="page-link" href="?page={{ searchpagination.previous_page_number }}">Previous</a>
+    </li>
+    {% endif %}
+
+    {% for n in npages %}
+    {% if n == searchpagination.number %}
+    <li class="page-item active">
+      <a class="page-link" href="?page={{ n }}">{{ n }} <span class="sr-only">(current)</span></a>
+    </li>
+    {% else %}
+    <li class="page-item"><a class="page-link" href="?page={{ n }}">{{ n }}</a></li>
+    {% endif %}
+    {% endfor %}
+
+    {% if searchpagination.has_next %}
+    <li class="page-item"><a class="page-link" href="?page={{ searchpagination.next_page_number }}">Next</a></li>
+    {% endif %}
+  </ul>
+</nav>
+
+</div>
 {% endblock %}
