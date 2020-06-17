@@ -5,28 +5,34 @@
 
 <h1 class="text-center">Resources</h1>
 <div class="container">
-  <p>Tags:
-    {% for tag in all_tags %}
-    <a href="{% url 'tagged' tag.slug %}" class="badge badge-success">{{tag}}</a>
-    {% endfor %}
-  </p>
   <!-- Collapse with filter -->
-  <p>
-    <a class="btn btn-primary" data-toggle="collapse" href="#filter_bar" role="button" aria-expanded="false"
-      aria-controls="filter_bar">
-      Filter
-    </a>
-  </p>
-  <div class="collapse" id="filter_bar">
-    <div class="card card-body">
-      <form method="get">
-        {{ search.form|crispy }}
-        <button class="btn btn-primary" type="submit">Search</button>
-      </form>
+  <div id="accordion">
+    <div class="card">
+      <div class="card-header" id="headingOne">
+        <h5 class="mb-0">
+          <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
+            aria-controls="collapseOne">
+            Advanced Search
+          </button>
+        </h5>
+      </div>
+      <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+        <div class="card-body">
+          <form method="get">
+            {{ search.form|crispy }}
+            <button class="btn btn-primary" type="submit">Search</button>
+          </form>
+        </div>
+      </div>
     </div>
   </div>
-
-
+  <hr>
+  <!-- Tags -->
+  <p class="text-center">Tags:
+    {% for tag in all_tags %}
+    <a href="{% url 'tagged' tag.slug %}" class="badge badge-pill badge-info">{{tag}}</a>
+    {% endfor %}
+  </p>
   <div class="row text-center">
     {% for resource in search.qs %}
 
@@ -88,11 +94,11 @@
           <form action="{% url 'save_resource' %}" method="post">{% csrf_token %}
             {% if resource.id in is_saved %}
             <button class="btn btn-outline-danger" type="submit" name="resource_id" value="{{ resource.id }}"><i
-                class="fas fa-star"></i>
+                class="fas fa-heart"></i>
             </button>
             {% else %}
             <button class="btn btn-outline-success" type="submit" name="resource_id" value="{{ resource.id }}"><i
-                class="far fa-star"></i>
+                class="far fa-heart"></i>
             </button>
             {% endif %}
           </form>

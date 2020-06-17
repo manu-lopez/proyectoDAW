@@ -1,5 +1,0 @@
-include README
-recursive-include comment *.py
-recursive-include comment/static *
-recursive-include comment/templates *
-recursive-include docs/source *

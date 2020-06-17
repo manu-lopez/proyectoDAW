@@ -1,4 +1,0 @@
-Django
-djangorestframework
-Pillow
-django-comments-dab

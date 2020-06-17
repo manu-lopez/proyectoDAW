@@ -27,7 +27,7 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'resource-list' %}">Resources <span class="sr-only">(current)</span></a>
+          <a class="nav-link" href="{% url 'resource-list' %}">Resources</a>
         </li>
         <!-- <li class="nav-item">
           <a class="nav-link" href="#">Top</a>
@@ -38,9 +38,17 @@
       </ul>
       <ul class="navbar-nav ml-auto mx-auto">
         {% if  request.path == '/' or '/resource/' in request.path or '/tag/' in request.path%}
-        <form method="get" action="{% url 'resource-list' %}">
-          {{ search.form.resource_name }}
-          <button class="btn btn-outline-info" type="submit">Search</button>
+
+        <form method="get" action="{% url 'resource-list' %}" class="form-inline">
+          <div class="input-group">
+            {{ search.form.resource_name }}
+            <div class="input-group-append">
+              <!-- <span class="input-group-text"><i class="fas fa-search"></i></span> -->
+              <button class="btn btn-outline-light" type="button"><i class="fas fa-search"></i></button>
+            </div>
+            <!-- <input type="text" class="form-control" placeholder="Search resource..." aria-label="Search"
+              aria-describedby="basic-addon1"> -->
+          </div>
         </form>
         {% endif %}
       </ul>
@@ -49,9 +57,18 @@
         <li class="nav-item">
           <a href="{% url 'create' %}"><button class="btn btn-success mx-2">Add</button></a>
         </li>
-        <li class="nav-item">
-          Hello, <a href="{% url 'userPage' %}">{{request.user}}</a><a class="nav-link"
-            href="{% url 'logout' %}"><span>logout</span></a>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            Hi, {{request.user|capfirst}}
+            <img src="{{request.user.profile.profile_pic.url}}" class="navbar-pic rounded-circle">
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="{% url 'userPage' %}"><i class="fas fa-user-circle"></i> Profile</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+          </div>
         </li>
         {% else %}
         <a href="{% url 'login' %}"><button class="btn btn-primary mx-2">Login</button></a>
@@ -60,11 +77,13 @@
       </ul>
     </div>
   </nav>
+
   <div class="container">
     {% block content %}
     {% endblock %}
   </div>
 
+  <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
 
   <!-- JS and jQuery -->
   <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
