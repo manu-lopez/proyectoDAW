@@ -78,11 +78,17 @@
     </div>
   </nav>
 
-  <div class="container">
+  <main class="container">
     {% block content %}
     {% endblock %}
-  </div>
+  </main>
 
+  <footer class="footer">
+    <div class="container">
+      <span class="text-muted">Created by <a href="https://github.com/manu-lopez">Manuel López</a> using <a
+          href="https://www.djangoproject.com/"><i class="fab fa-python"></i></a>.</span>
+    </div>
+  </footer>
   <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
 
   <!-- JS and jQuery -->
@@ -94,7 +100,6 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
     integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
     crossorigin="anonymous"></script>
-
 </body>
 
 </html>
