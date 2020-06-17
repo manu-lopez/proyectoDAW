@@ -5,7 +5,7 @@
 <div class="row">
   <div class="col-md-3">
     <div class="card card-body">
-      <h3 style="text-align: center">Account Settings</h3>
+      <h3 style="text-align: center">Account Settings for {{request.user.username|capfirst }}</h3>
       <hr>
       <img class="profile-pic" src="{{request.user.profile.profile_pic.url}}">
 
