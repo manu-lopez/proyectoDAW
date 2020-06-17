@@ -14,7 +14,7 @@ from taggit.models import Tag
 from django.template.defaultfilters import slugify
 
 # Search imports
-from .filters import ResourceFilter
+from .filters import ResourceSearch
 
 # Custom login and register
 from django.contrib.auth.forms import UserCreationForm
@@ -123,12 +123,17 @@ class ResourceList(ListView):
             lista.append(r.id)
         return lista
 
+    # Ordeno por puntuación
+    def get_queryset(self):
+        queryset = Resource.objects.all().order_by('-resource_stars')
+        return queryset
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         if self.request.user.is_authenticated:
             context['is_saved'] = self.is_saved()
         context['all_tags'] = Resource.resource_tags.all()
-        context['search'] = ResourceFilter(self.request.GET, queryset=self.get_queryset())
+        context['search'] = ResourceSearch(self.request.GET, queryset=self.get_queryset())
 
         return context
 
@@ -152,7 +157,7 @@ class ResourceDetail(DetailView):
         context = super().get_context_data(**kwargs)
         if self.request.user.is_authenticated:
             context['is_saved'] = self.is_saved()
-        context['search'] = ResourceFilter(self.request.GET, queryset=self.get_queryset())
+        context['search'] = ResourceSearch(self.request.GET, queryset=self.get_queryset())
         return context
 
 # Muestra los recursos segun tag
@@ -174,7 +179,7 @@ class tagged(ListView):
         tag = get_object_or_404(Tag, slug=self.kwargs.get('slug'))
         if self.request.user.is_authenticated:
             context['is_saved'] = self.is_saved()
-        context['search'] = ResourceFilter(self.request.GET, queryset=self.get_queryset())
+        context['search'] = ResourceSearch(self.request.GET, queryset=self.get_queryset())
         context['resource_tagged'] = Resource.objects.filter(resource_tags=tag)
         context['all_tags'] = Resource.resource_tags.all()
 

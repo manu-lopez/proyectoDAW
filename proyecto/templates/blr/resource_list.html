@@ -1,5 +1,6 @@
 {% extends 'blr/base.html' %}
 {% load crispy_forms_tags %}
+{% load vote %}
 {% block content %}
 
 <h1 class="text-center">Resources</h1>
@@ -10,22 +11,28 @@
     {% endfor %}
   </p>
   <!-- Collapse with filter -->
-  <!-- <p>
+  <p>
     <a class="btn btn-primary" data-toggle="collapse" href="#filter_bar" role="button" aria-expanded="false"
       aria-controls="filter_bar">
       Filter
     </a>
-  </p> -->
-  <!-- <div class="collapse" id="filter_bar">
+  </p>
+  <div class="collapse" id="filter_bar">
     <div class="card card-body">
       <form method="get">
-        {{ filter.form|crispy }}
+        {{ search.form|crispy }}
         <button class="btn btn-primary" type="submit">Search</button>
       </form>
     </div>
-  </div> -->
+  </div>
+
+
   <div class="row text-center">
     {% for resource in search.qs %}
+
+    <!-- Comprobamos que ha votado el usuario -->
+    {% vote_exists resource request.user 0 as vote_up %}
+    {% vote_exists resource request.user 1 as vote_down %}
     <div class="col-6 col-sm-4 col-md-3">
       <div class="card mb-4">
         <img class="card-img-top img-rounded center" src="{{ resource.resource_image.url }}"
@@ -38,12 +45,26 @@
 
           {% if  user.is_authenticated  %}
           <form action="{% url 'vote_resource' %}" method="post">{% csrf_token %}
+
+            {% if vote_up %}
+            <button class="btn btn-success" type="submit" name="upvote" value="{{ resource.id }}"><i
+                class="fas fa-plus"></i>
+            </button>
+            {% else %}
             <button class="btn btn-outline-success" type="submit" name="upvote" value="{{ resource.id }}"><i
                 class="fas fa-plus"></i>
             </button>
+            {% endif %}
+
+            {% if vote_down %}
+            <button class="btn btn-danger" type="submit" name="downvote" value="{{ resource.id }}"><i
+                class="fas fa-minus"></i>
+            </button>
+            {% else %}
             <button class="btn btn-outline-danger" type="submit" name="downvote" value="{{ resource.id }}"><i
                 class="fas fa-minus"></i>
             </button>
+            {% endif %}
           </form>
           {% endif %}
 
