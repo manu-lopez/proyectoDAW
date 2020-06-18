@@ -4,8 +4,8 @@
 }
 
 .profile-pic{
-  max-width: 200px;
-  max-height:200px;
+  max-width: 6.5rem;
+  max-height: 6.5rem;
   margin: 0 auto;
   border-radius: 50%;
 }

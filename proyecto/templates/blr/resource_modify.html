@@ -2,9 +2,11 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<h3>Modify Resource</h3>
-<form method="POST">{% csrf_token %}
-  {{ form|crispy }}
-  <button type="submit" class="edit btn btn-info">Edit</button>
-</form>
+<div class="mt-3 pb-3">
+  <h3>Update Resource</h3>
+  <form method="POST">{% csrf_token %}
+    {{ form|crispy }}
+    <button type="submit" class="edit btn btn-info">Edit</button>
+  </form>
+</div>
 {% endblock %}

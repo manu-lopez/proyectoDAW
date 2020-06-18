@@ -7,13 +7,6 @@ from django.forms.widgets import TextInput
 
 class ResourceSearch(django_filters.FilterSet):
 
-  # o = OrderingFilter(
-  #   fields=(
-  #     ('resource_stars'),
-  #     ('resource_price'),
-  #   ),
-  # )
-
   order_by_votes = OrderingFilter(
     choices=(
         ('resource_stars', 'Lower Votes'),

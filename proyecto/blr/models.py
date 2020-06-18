@@ -51,8 +51,6 @@ class Resource(VoteModel, models.Model):
     resource_url = models.URLField()
     resource_price = models.DecimalField(
         default=0, max_digits=4, decimal_places=2)
-    resource_discount = models.PositiveSmallIntegerField(
-        default=0, validators=[MaxValueValidator(100)])
     resource_creation_date = models.DateField(auto_now_add=True)
     post_author = models.ForeignKey(Profile, related_name='post_author', null=True, on_delete=models.SET_NULL)
     resource_slug = models.SlugField(unique=True, max_length=100)

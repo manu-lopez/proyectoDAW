@@ -25,56 +25,53 @@
   </div>
 </div>
 
-<h1>Resources created</h1>
-<div class="row text-center">
-  {% for resource in resources %}
-  <div class="col-6 col-sm-4 col-md-3">
-    <div class="card mb-4">
-      <img class="card-img-top img-rounded center" src="{{ resource.resource_image.url }}"
-        alt="{{resource.resource_name}} image">
-      <div class="card-header">
-        <a href="{% url 'resource-detail' resource.resource_slug %}">
-          <h4 class="my-0 font-weight-normal">{{resource.resource_name}}</h4>
-        </a>
-      </div>
-      <div class="card-body">
-        <p class="card-text">
-          {% if resource.resource_description|length > 150 %}
-          {{resource.resource_description|truncatechars:100}}
-          {% else %}
-          {{resource.resource_description}}
-          {% endif %}
-        </p>
+<div class="mt-4">
+  <h1>Resources created</h1>
+  <table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Name</th>
+        <th class="text-center" scope="col">Update</th>
+        <th class="text-center" scope="col">Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for resource in resources %}
+      <tr>
+        <td><a href="{% url 'resource-detail' resource.resource_slug %}">{{ resource.resource_name }}</a></td>
+        <td><a href="{% url 'update' resource.resource_slug %}"><button
+              class="btn btn-outline-primary btn-block">Update</button></a></td>
+        <td><a href="{% url 'delete' resource.resource_slug %}"><button
+              class="btn btn-outline-danger btn-block">Delete</button></a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 
-      </div>
-    </div>
-  </div>
-  {% endfor %}
 
   <h1>Resources saved</h1>
-  <div class="row text-center">
-    {% for resource in favorited %}
-    <div class="col-6 col-sm-4 col-md-3">
-      <div class="card mb-4">
-        <img class="card-img-top img-rounded center" src="{{ resource.resource_image.url }}"
-          alt="{{resource.resource_name}} image">
-        <div class="card-header">
-          <a href="{% url 'resource-detail' resource.resource_slug %}">
-            <h4 class="my-0 font-weight-normal">{{resource.resource_name}}</h4>
-          </a>
-        </div>
-        <div class="card-body">
-          <p class="card-text">
-            {% if resource.resource_description|length > 150 %}
-            {{resource.resource_description|truncatechars:100}}
-            {% else %}
-            {{resource.resource_description}}
-            {% endif %}
-          </p>
 
-        </div>
-      </div>
-    </div>
-    {% endfor %}
-  </div>
-  {% endblock %}
+  <table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Name</th>
+        <th class="text-center" scope="col">Saved</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for resource in favorited %}
+      <tr>
+        <td><a href="{% url 'resource-detail' resource.resource_slug %}">{{ resource.resource_name }}</a></td>
+        <td>
+          <form action="{% url 'save_resource' %}" method="post">{% csrf_token %}
+            <button class="btn btn-block btn-outline-danger" type="submit" name="resource_id"
+              value="{{ resource.id }}"><i class="fas fa-heart"></i>
+            </button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
