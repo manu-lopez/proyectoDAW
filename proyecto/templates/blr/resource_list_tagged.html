@@ -6,33 +6,11 @@
 <h1 class="text-center">Resources</h1>
 <div class="container">
   <!-- Collapse with filter -->
-  <div id="accordion">
-    <div class="card">
-      <div class="card-header" id="headingOne">
-        <h5 class="mb-0">
-          <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
-            aria-controls="collapseOne">
-            Advanced Search
-          </button>
-        </h5>
-      </div>
-      <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
-        <div class="card-body">
-          <form method="get">
-            {{ search.form|crispy }}
-            <button class="btn btn-primary" type="submit">Search</button>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
+  {% include "blr/collapse_filter.html" with search=search %}
   <hr>
   <!-- Tags -->
-  <p class="text-center">Tags:
-    {% for tag in all_tags %}
-    <a href="{% url 'tagged' tag.slug %}" class="badge badge-pill badge-info">{{tag}}</a>
-    {% endfor %}
-  </p>
+  {% include "blr/all_tags.html" with all_tags=all_tags %}
+
   <div class="row text-center">
     {% for resource in resource_tagged %}
 

@@ -1,48 +1,26 @@
 {% extends 'blr/base.html' %}
-{% load crispy_forms_tags %}
 {% load vote %}
 {% block content %}
 <h1 class="text-center">Resources</h1>
 <div class="container">
   <!-- Collapse with filter -->
-  <div id="accordion">
-    <div class="card">
-      <div class="card-header" id="headingOne">
-        <h5 class="mb-0">
-          <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
-            aria-controls="collapseOne">
-            Advanced Search
-          </button>
-        </h5>
-      </div>
-      <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
-        <div class="card-body">
-          <form method="get">
-            {{ search.form|crispy }}
-            <button class="btn btn-primary" type="submit">Search</button>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
+  {% include "blr/collapse_filter.html" with search=search %}
   <hr>
   <!-- Tags -->
-  <p class="text-center">Tags:
-    {% for tag in all_tags %}
-    <a href="{% url 'tagged' tag.slug %}" class="badge badge-pill badge-info">{{tag}}</a>
-    {% endfor %}
-  </p>
-  <div class="row text-center">
+  {% include "blr/all_tags.html" with all_tags=all_tags%}
 
+  <div class="row text-center">
     {% for resource in searchpagination %}
     <!-- Comprobamos que ha votado el usuario -->
     {% vote_exists resource request.user 0 as vote_up %}
     {% vote_exists resource request.user 1 as vote_down %}
 
     <!-- Card desde aqui -->
-    {% include "blr/card.html" with resource=resource vote_exists=vote_exists is_saved=is_saved %}
+    <div class="col-6 col-sm-4 col-md-3">
+      {% include "blr/card.html" with resource=resource vote_exists=vote_exists is_saved=is_saved %}
 
-    {% endfor %}
+      {% endfor %}
+    </div>
   </div>
 </div>
 <nav>
@@ -67,6 +45,5 @@
     {% endif %}
   </ul>
 </nav>
-
 </div>
 {% endblock %}

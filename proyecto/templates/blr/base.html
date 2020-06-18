@@ -37,17 +37,15 @@
         </li> -->
       </ul>
       <ul class="navbar-nav ml-auto mx-auto">
-        {% if  request.path == '/' or '/resource/' in request.path or '/tag/' in request.path%}
+        {% if  request.path == '/' or '/resource/' in request.path or '/tag/' in request.path %}
 
         <form method="get" action="{% url 'resource-list' %}" class="form-inline">
           <div class="input-group">
             {{ search.form.resource_name }}
             <div class="input-group-append">
-              <!-- <span class="input-group-text"><i class="fas fa-search"></i></span> -->
+
               <button class="btn btn-outline-light" type="submit"><i class="fas fa-search"></i></button>
             </div>
-            <!-- <input type="text" class="form-control" placeholder="Search resource..." aria-label="Search"
-              aria-describedby="basic-addon1"> -->
           </div>
         </form>
         {% endif %}

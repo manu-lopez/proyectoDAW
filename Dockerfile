@@ -15,6 +15,10 @@ WORKDIR /code
 COPY requirements.txt /code/
 
 RUN apt-get update
+
+RUN git clone https://github.com/radi85/Comment.git && cd Comment && python setup.py install
+# RUN cd Comment
+# RUN cd .. && rm -rf Comment
 RUN pip install -r requirements.txt
 
 # Copy project

@@ -12,8 +12,8 @@ urlpatterns = [
     path('vote/', views.vote_resource, name='vote_resource'),
     path('save/', views.save_resource, name='save_resource'),
     path('resource/<slug:slug>/', views.ResourceDetail.as_view(), name='resource-detail'),
-    path('resource/<slug:slug>/update', views.ResourceUpdate.as_view(), name='update'),
-    path('resource/<slug:slug>/delete/', views.ResourceDelete.as_view(), name='delete'),
+    path('update/<slug:slug>', views.ResourceUpdate.as_view(), name='update'),
+    path('delete/<slug:slug>/', views.ResourceDelete.as_view(), name='delete'),
     path('tag/<slug:slug>/', views.tagged.as_view(), name="tagged"),
 ]
 
