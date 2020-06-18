@@ -4,36 +4,60 @@
 
 {% block content %}
 
-<div class="card promoting-card mt-5">
-  <div class="card-header d-flex flex-row">
-    <div>
-      <h4 class="card-title font-weight-bold mb-2">{{object.resource_name}}</h4>
-      <fieldset class="starability-result mx-auto" data-rating="{{ resource.resource_stars }}">
-        Rated: {{ resource.resource_stars }} stars
-      </fieldset>
-      {% if object.resource_price == 0%}
-      <p class="card-text text-success"> FREE </p>
+<div class="card mt-5">
+  <div class="card-header">
+    {% if  user.is_authenticated  %}
+    <form action="{% url 'save_resource' %}" method="post">{% csrf_token %}
+      {% if resource.id in is_saved %}
+      <button class="btn btn-outline-danger btn-block" type="submit" name="resource_id" value="{{ resource.id }}"><i
+          class="fas fa-heart"></i>
+      </button>
       {% else %}
-      <p class="card-text"><i class="fas fa-money-bill-wave-alt"></i> {{object.resource_price}} €</p>
+      <button class="btn btn-outline-success btn-block" type="submit" name="resource_id" value="{{ resource.id }}"><i
+          class="far fa-heart"></i>
+      </button>
+      {% endif %}
+    </form>
+    <hr>
+    {% endif %}
+    <div>
+      <h4 class="card-title text-center font-weight-bold mb-2">{{object.resource_name}}</h4>
+      <hr>
+      {% if object.resource_price == 0%}
+      <p class="card-text text-center text-success"> FREE </p>
+      {% else %}
+      <p class="card-text text-center text-danger">{{object.resource_price}}
+        €</p>
       {% endif %}
     </div>
   </div>
-  <div class="card-body">
+  <img class="card-img-center-detail" src="{{ resource.resource_image.url }}" alt="{{resource.resource_name}} image">
+  <div class="card-header text-center">
+    <p class="starability-result mx-auto" data-rating="{{ resource.resource_stars }}">
+      Rated: {{ resource.resource_stars }} stars
+    </p>
     {% if  user.is_authenticated  %}
     <form action="{% url 'vote_resource' %}" method="post">{% csrf_token %}
-      <button class="btn btn-outline-success" type="submit" name="upvote" value="{{ resource.id }}"><i
+      {% if vote_up %}
+      <button class="btn btn-success btn-sm" type="submit" name="upvote" value="{{ resource.id }}"><i
           class="fas fa-plus"></i>
       </button>
-      <button class="btn btn-outline-danger" type="submit" name="downvote" value="{{ resource.id }}"><i
+      {% else %}
+      <button class="btn btn-outline-success btn-sm" type="submit" name="upvote" value="{{ resource.id }}"><i
+          class="fas fa-plus"></i>
+      </button>
+      {% endif %}
+      {% if vote_down %}
+      <button class="btn btn-danger btn-sm" type="submit" name="downvote" value="{{ resource.id }}"><i
           class="fas fa-minus"></i>
       </button>
+      {% else %}
+      <button class="btn btn-outline-danger btn-sm" type="submit" name="downvote" value="{{ resource.id }}"><i
+          class="fas fa-minus"></i>
+      </button>
+      {% endif %}
     </form>
     {% endif %}
-
-  </div>
-  <div class="view overlay">
-    <img style="width: 200px; height: 200px;" class="card-img-top img-rounded center"
-      src="{{ resource.resource_image.url }}" alt="{{resource.resource_name}} image">
   </div>
   <div class="card-body">
     <p class="card-text">{{object.resource_description}}</p>
@@ -46,28 +70,13 @@
     </a>
   </div>
 
+  {% if request.user.profile == object.post_author %}
   <div class="card-footer">
-    {% if request.user.profile == object.post_author %}
-    <div class="btn-group" role="group" aria-label="Basic example">
-      <a href="{% url 'update' object.resource_slug %}"><button class="btn btn-outline-primary mr-1">Update</button></a>
-      <a href="{% url 'delete' object.resource_slug %}"><button class="btn btn-outline-danger">Delete</button></a>
-    </div>
-    {% endif %}
-    {% if  user.is_authenticated  %}
-
-    <form action="{% url 'save_resource' %}" method="post">{% csrf_token %}
-      {% if resource.id in is_saved %}
-      <button class="btn btn-outline-danger" type="submit" name="resource_id" value="{{ resource.id }}"><i
-          class="fas fa-heart"></i>
-      </button>
-      {% else %}
-      <button class="btn btn-outline-success" type="submit" name="resource_id" value="{{ resource.id }}"><i
-          class="far fa-heart"></i>
-      </button>
-      {% endif %}
-    </form>
+    <a href="{% url 'update' object.resource_slug %}"><button
+        class="btn btn-outline-primary btn-block mr-1">Update</button></a>
+    <a href="{% url 'delete' object.resource_slug %}"><button
+        class="btn btn-outline-danger btn-block mt-2 mb-2">Delete</button></a>
   </div>
-
   {% endif %}
 </div>
 
