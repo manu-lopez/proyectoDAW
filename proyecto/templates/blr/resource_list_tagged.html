@@ -18,7 +18,9 @@
     {% vote_exists resource request.user 0 as vote_up %}
     {% vote_exists resource request.user 1 as vote_down %}
     <!-- Card desde aqui -->
-    {% include "blr/card.html" with resource=resource vote_exists=vote_exists %}
+    <div class="col-6 col-sm-4 col-md-3">
+      {% include "blr/card.html" with resource=resource vote_exists=vote_exists %}
+    </div>
     {% endfor %}
   </div>
 </div>
