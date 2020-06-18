@@ -1,6 +1,6 @@
 
 
-![image-20200618200959076](/home/work/.config/Typora/typora-user-images/image-20200618200959076.png)
+![image-20200618200959076](doc_img/image-20200618200959076.png)
 
 # Best Learning Resources (BLR)
 
