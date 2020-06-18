@@ -29,19 +29,13 @@
         <li class="nav-item">
           <a class="nav-link" href="{% url 'resource-list' %}">Resources</a>
         </li>
-        <!-- <li class="nav-item">
-          <a class="nav-link" href="#">Top</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Sobre Nosotros</a>
-        </li> -->
       </ul>
       <ul class="navbar-nav ml-auto mx-auto">
         {% if  request.path == '/' or '/resource/' in request.path or '/tag/' in request.path %}
 
         <form method="get" action="{% url 'resource-list' %}" class="form-inline">
           <div class="input-group">
-            {{ search.form.resource_name }}
+            {{ search.form.resource_description }}
             <div class="input-group-append">
 
               <button class="btn btn-outline-light" type="submit"><i class="fas fa-search"></i></button>

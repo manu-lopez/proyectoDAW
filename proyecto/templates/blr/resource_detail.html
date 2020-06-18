@@ -65,7 +65,7 @@
     <a href="{% url 'tagged' tag.slug %}" class="badge badge-info">{{ tag }}</a>
     {% endfor %}
     <p class="card-text"><i class="fas fa-user-alt"></i> {{object.resource_author}}</p>
-    <a href="{{object.resource_url}}">
+    <a target="_blank" href="{{object.resource_url}}">
       <p class="card-text"><i class="fas fa-external-link-alt"></i>Website</p>
     </a>
   </div>
@@ -79,6 +79,7 @@
   </div>
   {% endif %}
 </div>
-
-{% render_comments object request comments_per_page=5 %}
+<div class="pb-2">
+  {% render_comments object request comments_per_page=5 %}
+</div>
 {% endblock %}

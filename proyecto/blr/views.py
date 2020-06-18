@@ -137,7 +137,7 @@ class ResourceList(ListView):
 
         # Pagination
         filtered_qs = ResourceSearch(self.request.GET, queryset=self.get_queryset())
-        paginator = Paginator(filtered_qs.qs, 3)
+        paginator = Paginator(filtered_qs.qs, 6)
         page = self.request.GET.get('page')
         try:
             response = paginator.page(page)
