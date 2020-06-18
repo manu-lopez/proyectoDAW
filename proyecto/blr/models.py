@@ -17,7 +17,7 @@ from django.urls import reverse
 # Reference: https://bit.ly/3f0TeWp
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    profile_pic = models.ImageField(default="profile1.png", null=True, blank=True)
+    profile_pic = models.ImageField(default="default/profile1.png", null=True, blank=True)
     
     def __str__(self):
         return self.user.username
@@ -46,7 +46,7 @@ class Resource(VoteModel, models.Model):
     resource_name = models.CharField(max_length=100)
     resource_description = models.TextField()
     resource_author = models.CharField(max_length=50)
-    resource_image = models.ImageField(default="default.png")
+    resource_image = models.ImageField(default="default/default.png")
     user_saved = models.ManyToManyField(Profile, related_name='votes', blank=True)
     resource_url = models.URLField()
     resource_price = models.DecimalField(

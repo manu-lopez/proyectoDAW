@@ -24,7 +24,8 @@ postgres_data/
 .idea
 
 # Media Files
-proyecto/static/images/
+proyecto/static/images/*
+!proyecto/static/images/default/
 
 # Env
 proyecto/venv/

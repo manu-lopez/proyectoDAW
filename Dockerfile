@@ -14,11 +14,13 @@ WORKDIR /code
 # Copy and install dependencies
 COPY requirements.txt /code/
 
+# Update system
 RUN apt-get update
 
+# Cloning and installing comment repository because installing with pip gives errors
 RUN git clone https://github.com/radi85/Comment.git && cd Comment && python setup.py install
-# RUN cd Comment
-# RUN cd .. && rm -rf Comment
+
+# Install rest django requeriments
 RUN pip install -r requirements.txt
 
 # Copy project

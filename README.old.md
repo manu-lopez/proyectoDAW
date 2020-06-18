@@ -16,12 +16,10 @@ Las tecnologías las voy a dividir en dos. Por un lado las que usaré para el pr
 
 Como tecnologías básicas pues haré uso de [Django](https://www.djangoproject.com/) y [PostgreSQL](https://www.postgresql.org/), y maquetaría de manera rápida con [bootstrap](https://getbootstrap.com/).
 
-Como tecnologías extras, pues para maquetar usaría [tailwindcss](https://tailwindcss.com/) y si necesitara de un framework frontend, sería [vuejs](https://vuejs.org/). Luego para el despliegue me gustaria hacer uso de [Docker](https://www.docker.com/).
+Para el despliegue me gustaria hacer uso de [Docker](https://www.docker.com/).
 
 - Planificación
 
-Mucho café y dormir poco 🤷🏽‍♂️
-
 Probablemente use un sistema parecido a scrum. Dividiré el proyecto en tareas, las ordenaré según importancia y las iré realizando. No creo que establezca tiempos porque no serán acertados.
 
-El proyecto estará en Github y trabajaré mediante GitFlow o lo más parecido que pueda, ya que nunca trabajé usando este método, aunque si he trabajado diviendo en ramas el proyecto.
+El proyecto estará en Github.
