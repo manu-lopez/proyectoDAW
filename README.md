@@ -1015,13 +1015,15 @@ COMMENT_FLAG_REASONS = [
 
 
 
+### Tercera Parte
 
+Para la máquetacion he usado [Bootstrap](https://getbootstrap.com/) y Flex (con las clases de Bootstrap). Además de los iconos de [FontAwesome](https://fontawesome.com/).
+
+Realicé un boceto a papel y lápiz y a partir de esa idea he realizado el diseño.
 
 # Instalación
 
 ### Pre-requisitos 📋
-
-Independientemente del sistema operativo que tengamos (Linux/MacOs/Windows), tenemos que tener instalado lo indicado a continuación:
 
 - [Git](https://git-scm.com/downloads)
 - [Docker](https://www.docker.com/products/docker-desktop)
@@ -1087,4 +1089,4 @@ Con esto ya podemos crear recursos perfectamente.
 
 ## Autor ✒️
 
-- [Manuel López Ramos](https://github.com/manu-lopez)
+[Manuel López Ramos](https://github.com/manu-lopez)
