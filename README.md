@@ -1042,7 +1042,7 @@ Realicé un boceto a papel y lápiz y a partir de esa idea he realizado el dise�
 
 ### Instalación con datos
 
-Para la instalación con los datos tenemos que bajarnos este zip que es el proyecto completo junto a la base de datos.
+Para la instalación con los datos tenemos que bajarnos [este zip](https://www.dropbox.com/s/pmq19wgkic2mpgd/ProyectoDatos.zip?dl=0) que es el proyecto completo junto a la base de datos.
 
 Lo descomprimimos, entramos en la carpeta (tenemos que ver el archivo dockerfile y docker-compose.yml) y ejecutamos el siguiente comando.
 
