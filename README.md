@@ -22,10 +22,19 @@ Cuando se quiere aprender un lenguaje de programación o alguna nueva tecnologí
 
 ## Documentación
 
-#### Un poco de info
+Antes que nada vamos a comentar un poco las tecnologías.
 
-> En proceso...
->
+**Docker**
+
+La idea detrás de Docker es crear contenedores ligeros y portables para que las aplicaciones software puedan ejecutarse en cualquier máquina que tenga Docker instalado, independientemente del sistema operativo que esta tenga, facilitando así también los despliegues.
+
+Podemos decir que un contenedor es una especie de máquina virtual, aunque es mucho más ligera porque no necesitas todo el sistema operativo completo ya que usa el de la máquina donde se ejecuta el contenedor. En este contenedor es donde alojamos todo lo que necesitamos junto a nuestro proyecto. De esta manera podemos llevarnos ese contenedor a cualquier lugar que tengamos Docker instalado y funcionará sin problemas, ya que es independiente del sistema que tenga la máquina.
+
+Esto nos permite tener un entorno controlado, para desarrollar, para testing o para desplegar.
+
+**Django**
+
+Django es un framework web, de código abierto, desarrollado en Python que respeta el patrón de Modelo-Vista-Controlador. Django pone énfasis en el re-uso, la conectividad y extensibilidad de componentes, el desarrollo rápido y el principio DRY (Don't Repeat Yourself).
 
 ### Proyecto
 
@@ -43,7 +52,7 @@ Durante todo el desarrollo se ha hecho uso de Git y Github como sistema de contr
 
 El usar Docker como plataforma de despliegue nos aporta bastantes ventajas, ya que nos abstrae de nuestra plataforma personal de desarrollo y luego en producción con tener un VPS corriendo Linux es suficiente. De esta forma no tendremos problemas de compatibilidades ni conflictos con el resto de proyectos que podamos tener.
 
-Docker contiene imagenes oficiales en [docker hub](https://hub.docker.com/), para este proyecto usaremos una imagen oficial y ademas crearemos una nosotros.
+Docker contiene imagenes oficiales en [docker hub](https://hub.docker.com/), para este proyecto usaremos una imagen oficial y además crearemos una nosotros.
 
 La imagen que vamos a crear es partir de la imagen oficial de [python](https://hub.docker.com/_/python). El archivo dockerfile es el siguiente.
 
@@ -119,12 +128,12 @@ volumes:
 
 Lo más relevante que podemos comentar de este documento para que comprendan es lo siguiente:
 
-- `services`: Tenemos dos servicios, que son `db`y `web`, que corresponde a nuestros dos contenedores y además tenemos `volumes` que como el nombre indica, es un volumen donde tenemos los datos de la base de datos y de está manera conseguimos cierta persistencia, ya que podremos borrar y reconstruir los contenedores si lo necesitamos, pero no perderemos los datos.
-- `image`: En este campo procedemos a seleccionar la imagen que usaremos en nuestro contenedor, para el contenedor `db` usamos la imagen oficial de postgres en su version `11.7` y para `web` la imagen que creamos antes en el archivo [`dockerfile`](#dockerfile) (se lo indicamos en `build`: .).
+- `services`: Tenemos dos servicios, que son `db`y `web`, que corresponde a nuestros dos contenedores y además tenemos `volumes` que como el nombre indica, es un volumen donde tenemos los datos de la base de datos y de esta manera conseguimos cierta persistencia, ya que podremos borrar y reconstruir los contenedores si lo necesitamos, pero no perderemos los datos.
+- `image`: En este campo procedemos a seleccionar la imagen que usaremos en nuestro contenedor, para el contenedor `db` usamos la imagen oficial de postgres en su versión `11.7` y para `web` la imagen que creamos antes en el archivo [`dockerfile`](#dockerfile) (se lo indicamos en `build`: .).
 - `depends_on`: Le indicamos dependencia entre servicios.
-- `ports` y `volumes`: Funcionan de la siguiente manera: `"puerto local":"puerto contenedor"` || `"ruta local":"ruta contenedor"`. Al tener los volumes, tanto nosotros como el contenedor accedemos al código en el mismo lugar (nuestra carpeta `proyecto`en este caso concreto)
+- `ports` y `volumes`: Funcionan de la siguiente manera: `"puerto local":"puerto contenedor"` || `"ruta local":"ruta contenedor"`. Al tener `volumes`, tanto nosotros como el contenedor accedemos al código en el mismo lugar (nuestra carpeta `proyecto` en este caso concreto)
 
-De esta manera tenemos nuestra paltaforma de desarrollo y despliegue. [Aquí](#instalación) podemos seguir los pasos necesarios para realizar la instalación.
+De esta manera tenemos nuestra plataforma de desarrollo y despliegue. [Aquí](#instalación) podemos seguir los pasos necesarios para realizar la instalación.
 
 ### Segunda parte:
 
@@ -216,7 +225,7 @@ Vamos a explicar un poco que tenemos en este modelo.
 class Resource(VoteModel, models.Model):
 ```
 
-`VoteModel` corresponge al paquete [Django Vote](https://github.com/shellfly/django-vote), que nos permite añadir la funcionalidad de votar a los recursos, aunque realmente usaremos parte de su funcionalidad.
+`VoteModel` corresponde al paquete [Django Vote](https://github.com/shellfly/django-vote), que nos permite añadir la funcionalidad de votar a los recursos, aunque realmente usaremos parte de su funcionalidad.
 
 ```python
 resource_image = models.ImageField(default="default/default.png")
@@ -234,7 +243,7 @@ Aquí tenemos la primera relación del modelo, que nos servirá para almacenar l
 post_author = models.ForeignKey(Profile, related_name='post_author', null=True, on_delete=models.SET_NULL)
 ```
 
-La segunda relacion del modelo nos indica el usuario que ha publicado el recurso en nuestra plataforma. A diferencia de de ` resource_author` que es el creador del recurso. En el caso de que el usuario sea borrado, el campo quedara con `NULL` y no se eliminarán los recursos creados por este.
+La segunda relación del modelo nos indica el usuario que ha publicado el recurso en nuestra plataforma. A diferencia de de ` resource_author` que es el creador del recurso. En el caso de que el usuario sea borrado, el campo quedará con `NULL` y no se eliminarán los recursos creados por este.
 
 ```python
 resource_tags = TaggableManager()
@@ -252,7 +261,7 @@ En esta relación establecemos el tipo de cada recurso, según los que tengamos 
 resource_stars = models.IntegerField(default=0)
 ```
 
-Este campo es el que estableceremos la cantidad de estrellas que tendremos en los recursos. Estableceremos cuantas estrellas le corresponde a partir de los votos obtenidos con [Django Vote](https://github.com/shellfly/django-vote)
+Este campo es el que estableceremos la cantidad de estrellas que tendremos en los recursos. Estableceremos cuántas estrellas le corresponde a partir de los votos obtenidos con [Django Vote](https://github.com/shellfly/django-vote)
 
 ```python
 comments = GenericRelation(Comment)
@@ -413,13 +422,13 @@ Y con esto y tenemos las funciones creadas.
 
 #### Creación de recurso
 
-Para la creacion de recurso hacemos uso de la CBV CreateView
+Para la creación de recurso hacemos uso de la CBV CreateView
 
 > views.py
 
 ```python
-# Controlamos que solo usuarios autentificados puedan acceder, con
-# el mixin LoginRequiredMixi
+# Controlamos que solo usuarios autenticados puedan acceder, con
+# el mixin LoginRequiredMixin
 class ResourceCreate(LoginRequiredMixin, CreateView):
     login_url = '/login/'
     redirect_field_name = 'redirect_to'
@@ -428,23 +437,24 @@ class ResourceCreate(LoginRequiredMixin, CreateView):
 	
     def form_valid(self, form):
     	# Establecemos como autor del recurso publicado, al usuario 
-        # que esta realizando la petición y además formamos el slug
-        # del recurso a partir del nombre de este.
+      # que está realizando la petición y además formamos el slug
+      # del recurso a partir del nombre de este.
     	form.instance.post_author = self.request.user.profile
-        form.instance.resource_slug = slugify(form.instance.resource_name)
+      form.instance.resource_slug = slugify(form.instance.resource_name)
+
+      # Ya que el slug debe ser único, comprobamos que se puede crear
+      # si no es posible, avisamos al usuario y no creamos el recurso.
+      try:
+        return super().form_valid(form)
+      except IntegrityError as e:
+        # Recogemos los datos mandados para volver a mostrarlos y no
+        # hacer que el usuario tenga que rellenar todo de nuevo.
+        form = ResourceForm(self.request.POST)
+        # Usamos el sistema de mensajes de Django basados en las cookies
+        # y las sesiones.
+        messages.add_message(self.request,messages.WARNING,"Resource name already exists")
         
-        # Ya que el slug debe ser único, comprobamos que se puede crear
-        # si no es posible, avisamos al usuario y no creamos el recurso.
-        try:
-            return super().form_valid(form)
-        except IntegrityError as e:
-            # Recogemos los datos mandados para volver a mostrarlos y no
-            # hacer que el usuario tenga que rellenar todo de nuevo.
-            form = ResourceForm(self.request.POST)
-            # Usamos el sistema de mensajes de Django basados en las cookies
-            # y las sesiones.
-            messages.add_message(self.request,messages.WARNING,"Resource name already exists")
-            return super().form_invalid(form)
+        return super().form_invalid(form)
 ```
 
 > forms.py
@@ -498,6 +508,8 @@ Y con esto tenemos la opción de crear recursos.
 Si somos los creadores del recurso en nuestra plataforma, nos aparecerán estos botones.
 
 ![image-20200619124002747](doc_img/image-20200619124002747.png)
+
+Hemos usado CBV para ambas.
 
 > views.py
 
@@ -580,7 +592,7 @@ Si el usuario está autenticado, podrá guardar como favorito los recursos.
 def save_resource(request):
     # Obtenemos el rescurso a guardar como favorito
     resource = get_object_or_404(Resource, id=request.POST.get('resource_id'))
-    # Si esta guardado, lo borramos y si no lo guardamos.
+    # Si está guardado, lo borramos y si no lo guardamos.
     if resource.user_saved.filter(id=request.user.profile.id).exists():
         resource.user_saved.remove(request.user.profile)
     else:
@@ -590,7 +602,7 @@ def save_resource(request):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 ```
 
-Podemos guardar desde el template de todos los recursos o desde el del recurso detallado. Indicamos si está guardado como favorito con el icono del corazón rojo relleno y si no con el icono del corazon verde vacio.
+Podemos guardar desde el template de todos los recursos o desde el del recurso detallado. Indicamos si está guardado como favorito con el icono del corazón rojo relleno y si no con el icono del corazón verde vacio.
 
 > card.html
 
@@ -616,7 +628,7 @@ Podemos guardar desde el template de todos los recursos o desde el del recurso d
 
 #### Página usuario
 
-Desde la página de usuario podemos cambiar la imagén (al crear cuenta se nos pone una por defecto), cambiar la contraseña actual, ver los recursos creados y los que hemos guardado como favoritos.
+Desde la página de usuario podemos cambiar la imagen (al crear cuenta se nos pone una por defecto), cambiar la contraseña actual, ver los recursos creados y los que hemos guardado como favoritos.
 
 > views.py
 
@@ -637,7 +649,7 @@ def userPage(request):
         if form.is_valid():
             form.save()
     
-    # Pasamos los recursos creados, los favoritos y el usario al template
+    # Pasamos los recursos creados, los favoritos y el usuario al template
     # para mostrarlos
     context = {'resources': resources, 'favorited':favorited, 'form': form}
     return render(request, 'blr/user.html', context)
@@ -661,7 +673,7 @@ Luego en el template `user.html` le damos forma y se vería de esta manera.
 
 #### Votar recursos
 
-Al estar registrado, tenemos la opcion de votar positiva o negativamente los recursos a través de estos botones
+Al estar registrado, tenemos la opción de votar positiva o negativamente los recursos a través de estos botones
 
 ![image-20200619131100249](doc_img/image-20200619131100249.png)
 
@@ -671,7 +683,7 @@ Antes comentamos que haciamos uso del paquete [Django Vote](https://github.com/s
 
 ![image-20200619132506128](doc_img/image-20200619132506128.png)
 
-Nosotros queremos mostrar la calificacion con una puntuacion máxima de 5, pero como vemos en la imagen, no corresponde la cantidad de votos con la puntuación, por lo que tenemos que hacer un par de cosas que os explico direcamente en el código correspondiente.
+Nosotros queremos mostrar la calificación con una puntuación máxima de 5, pero como vemos en la imagen, no corresponde la cantidad de votos con la puntuación, por lo que tenemos que hacer un par de cosas que os explico directamente en el código correspondiente.
 
 > views.py
 
@@ -708,12 +720,12 @@ def vote_resource(request):
 
     # Procedemos a obtener el recurso pero con los votos actualizados
     after_vote_resource = get_object_or_404(Resource, id=rid)
-    # Obtenemos todos la sumna de votos realizados
+    # Obtenemos todos la suma de votos realizados
     total_votes = after_vote_resource.num_vote_down + after_vote_resource.num_vote_up
-    # Solo realizamos el calculo si existe más de un voto
-    # ya que si no estariamos diviendo 0 y tendriamos errores
+    # Solo realizamos el cálculo si existe más de un voto
+    # ya que si no estaríamos dividiendo 0 y tendríamos errores
     if total_votes > 0:
-        # Obtenemos la cantidad que le corresponde con una puntuacion
+        # Obtenemos la cantidad que le corresponde con una puntuación
         # máxima de 5 estrellas
         resource.resource_stars = round((after_vote_resource.num_vote_up * 5)/total_votes)
     
@@ -828,11 +840,11 @@ Al igual que con cards, todos los tags los tenemos en un `html` concreto, para i
 </p>
 ```
 
-Si no hay ninguno seleccionado se ve asi:
+Si no hay ninguno seleccionado se ve así:
 
 ![image-20200619145524513](doc_img/image-20200619145524513.png)
 
-Y si hemos seleccionado algun se ve en verde:
+Y si hemos seleccionado alguno se ve en verde:
 
 ![image-20200619145550361](doc_img/image-20200619145550361.png)
 
@@ -840,7 +852,7 @@ Y si hemos seleccionado algun se ve en verde:
 
 #### Buscar cursos
 
-Tenemos dos buscadores, uno en el `navbar` y otro más avanzado en un componente `collapse`de Bootstrap en el cuerpo de la página
+Tenemos dos buscadores, uno en el `navbar` y otro más avanzado en un componente `collapse` de Bootstrap en el cuerpo de la página
 
 > Buscador de navbar
 
@@ -955,13 +967,13 @@ urlpatterns = patterns(
 )
 ```
 
-Luego realizamos una migracion de `comment`
+Luego realizamos una migración de `comment`
 
 ```bash
 $ python manage.py migrate comment
 ```
 
-Y como mostré en el [modelo de resource](#modelos), lo añadimos
+Y como mostré en el [modelo de resource](#modelos), lo añadimos.
 
 ```python
 class Resource(VoteModel, models.Model):
@@ -994,7 +1006,7 @@ Y este sería el resultado.
 
 <img src="doc_img/image-20200619152809867.png" alt="image-20200619152809867" style="zoom:67%;" />
 
-Solo pueden comentar lo usuarios autentificados, pueden votar comentarios, contestar e incluso denunciarlos.
+Solo pueden comentar lo usuarios autenticados, pueden votar comentarios, contestar e incluso denunciarlos.
 
 Si queremos personalizar las opciones de denuncia de comentario, lo indicamos en `settings.py`.
 
@@ -1017,31 +1029,49 @@ COMMENT_FLAG_REASONS = [
 
 ### Tercera Parte
 
-Para la máquetacion he usado [Bootstrap](https://getbootstrap.com/) y Flex (con las clases de Bootstrap). Además de los iconos de [FontAwesome](https://fontawesome.com/).
+Para la maquetación he usado [Bootstrap](https://getbootstrap.com/) y Flex (con las clases de Bootstrap). Además de los iconos de [FontAwesome](https://fontawesome.com/).
 
 Realicé un boceto a papel y lápiz y a partir de esa idea he realizado el diseño.
 
-# Instalación
+# Instalación 🔧
 
 ### Pre-requisitos 📋
 
 - [Git](https://git-scm.com/downloads)
 - [Docker](https://www.docker.com/products/docker-desktop)
 
-### Instalación 🔧
+### Instalación con datos
+
+Para la instalación con los datos tenemos que bajarnos este zip que es el proyecto completo junto a la base de datos.
+
+Lo descomprimimos, entramos en la carpeta (tenemos que ver el archivo dockerfile y docker-compose.yml) y ejecutamos el siguiente comando.
+
+```bash
+$ docker-compose up
+```
+
+Tras realizar la instalación, automáticamente ejecutará el comando `runserver` y podremos acceder a 'localhost:8000' y tendremos el proyecto funcionando.
+
+> Usuarios de prueba: manzana / naranja
+>
+> Password: .qwerty123
+
+ 
+
+### Instalación desde 0 
 
 Una vez tengamos todo instalado, el primer paso será clonar este repositorio.
 
 ```bash
-git clone https://github.com/manu-lopez/proyectoDAW.git
+$ git clone https://github.com/manu-lopez/proyectoDAW.git
 ```
 
 A continuación debemos asegurarnos que tenemos Docker corriendo. 
 
 ```bash
 # Podemos ejecutar uno de estos comandos
-docker version 
-docker info
+$ docker version 
+$ docker info
 ```
 
 Nos dará información de Docker o en el caso de que no esté corriendo, nos dirá que no consiguió conectar con el daemon.
@@ -1049,27 +1079,27 @@ Nos dará información de Docker o en el caso de que no esté corriendo, nos dir
 Cuando tengamos seguro que Docker está funcionando, pasamos a construir el contenedor django.
 
 ```bash
-docker-compose build
+$ docker-compose build
 ```
 
 Una vez termine este proceso, pasamos a ejecutar el siguiente comando.
 
 ```bash
-docker-compose up
+$ docker-compose up
 ```
 
 De esta manera tendremos tanto django como postgres funcionando, a continuación debemos realizar un par de pasos dentro del contenedor de django.
 
 ```bash
 # Entramos dentro del contenedor
-docker exec -it container_django bash
+$ docker exec -it container_django bash
 
 # Lo siguiente será crear las migraciones y migrarlas.
-python manage.py makemigrations
-python manage.py migrate
+$ python manage.py makemigrations
+$ python manage.py migrate
 
 # Por último creamos un super usuario
-python manage.py createsuperuser
+$ python manage.py createsuperuser
 
 ```
 
@@ -1077,7 +1107,7 @@ Ya podremos acceder a la plataforma como vemos en esta imagen.
 
 ![image-20200618194023682](doc_img/image-20200618194023682.png)
 
-El último paso para tener completamente funcional la plataforma, es crear los tipos que creas convenientes para los recursos que aportaran los usuarios. Para ello entramos con nuestra cuenta de super usuario en `/admin` y añadimos los tipos en Types.
+El último paso para tener completamente funcional la plataforma, es crear los tipos que creas convenientes para los recursos que aportarán los usuarios. Para ello entramos con nuestra cuenta de super usuario en `/admin` y añadimos los tipos en Types.
 
 ![image-20200618194820946](doc_img/image-20200618194820946.png)
 
