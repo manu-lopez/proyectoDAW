@@ -25,6 +25,8 @@ from django.contrib import messages
 
 from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView, PasswordResetView
 
+from django.db import IntegrityError
+
 # Custom 404
 def error_404(request, exception):
     return render(request,'blr/404.html', status = 404)
@@ -79,13 +81,17 @@ class ResourceCreate(LoginRequiredMixin, CreateView):
     redirect_field_name = 'redirect_to'
     form_class = ResourceForm
     template_name = "blr/resource_create.html"
-    
+
     # Set logged user as creator of the resource
     def form_valid(self, form):
         form.instance.post_author = self.request.user.profile
         form.instance.resource_slug = slugify(form.instance.resource_name)
-        return super().form_valid(form)
-
+        try:
+            return super().form_valid(form)
+        except IntegrityError as e:
+            form = ResourceForm(self.request.POST)
+            messages.add_message(self.request,messages.WARNING,"Resource name already exists")
+            return super().form_invalid(form)
 
 # Solo puede modificar autor 
 class ResourceUpdate(UpdateView):
