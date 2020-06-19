@@ -1,13 +1,12 @@
 {% extends 'blr/base.html' %}
 
-
 {% block content %}
 <div class=" mt-5">
   <div class="jumbotron">
     <h3>Confirm delete resource.</h3>
     <form method="post">{% csrf_token %}
       <p>Are you sure you want to delete "{{ object }}" resource?</p>
-      <button class="btn btn-lg btn-danger" type="submit" value="Confirm">Cofirm</button>
+      <button class="btn btn-lg btn-danger" type="submit" value="Confirm">Confirm</button>
     </form>
   </div>
 </div>

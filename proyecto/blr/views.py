@@ -61,7 +61,7 @@ class logoutView(LogoutView):
 class changePassword(PasswordChangeView):
     success_url = 'userPage'
 
-# UserPage view
+# Página de usuario
 def userPage(request):
     resources = request.user.profile.post_author.all()
     favorited = request.user.profile.votes.all()
@@ -93,7 +93,7 @@ class ResourceCreate(LoginRequiredMixin, CreateView):
             messages.add_message(self.request,messages.WARNING,"Resource name already exists")
             return super().form_invalid(form)
 
-# Solo puede modificar autor 
+# Vista para actualizar recurso
 class ResourceUpdate(UpdateView):
     model = Resource
     form_class = ResourceForm
@@ -105,7 +105,7 @@ class ResourceUpdate(UpdateView):
         qs = super(ResourceUpdate, self).get_queryset()
         return qs.filter(post_author=self.request.user.profile)
 
-
+# Vista para borrar recurso
 class ResourceDelete(DeleteView):
     model = Resource
     success_url = reverse_lazy('resource-list')

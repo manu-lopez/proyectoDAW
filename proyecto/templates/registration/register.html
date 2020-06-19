@@ -2,13 +2,15 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<h3>Register</h3>
-<form method="POST">{% csrf_token %}
-  {{ loginForm.username|as_crispy_field }}
-  {{ loginForm.password1|as_crispy_field }}
-  {{ loginForm.password2|as_crispy_field }}
-  <button class="btn btn-lg btn-primary btn-block" type="submit">Create</button>
-</form>
+<div class="mt-3">
+  <h3>Register</h3>
+  <form method="POST">{% csrf_token %}
+    {{ loginForm.username|as_crispy_field }}
+    {{ loginForm.password1|as_crispy_field }}
+    {{ loginForm.password2|as_crispy_field }}
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Create</button>
+  </form>
 
-<p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
+  <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
+</div>
 {% endblock %}
