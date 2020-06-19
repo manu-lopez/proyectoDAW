@@ -25,11 +25,8 @@ Cuando se quiere aprender un lenguaje de programación o alguna nueva tecnologí
 
 #### Un poco de info
 
-Django es.....
-
-Docker es....
-
-postgres es....
+> En proceso...
+>
 
 ### Proyecto
 
@@ -136,14 +133,14 @@ Está es la parte más amplia y compleja del proyecto, a parte de lo [visto](htt
 
 La plataforma permite lo siguiente:
 
-- [Registro](# Registro).
-- [Login, logout, cambiar contraseña](# Login).
-- [Creación de recurso](# Creación de recurso).
-- [Actualizar y borrar tus recursos](# Actualizar y borrar tus recursos).
-- [Guardar recursos como favoritos](# Guardar recursos como favoritos).
-- [Página usuario](# Página usuario).
-- [Votar recursos](# Votar recursos).
-- [Tags](# Tags).
+- [Registro](#Registro).
+- [Login, logout, cambiar contraseña](#login,-logout-y-cambiar-contraseña).
+- [Creación de recurso](#creación-de-recurso).
+- [Actualizar y borrar tus recursos](#actualizar-y-borrar-tus-recursos).
+- [Guardar recursos como favoritos](#guardar-recursos-como-favoritos).
+- [Página usuario](#página-usuario).
+- [Votar recursos](#votar-recursos).
+- [Tags](#tags).
 - Buscar cursos (según varios parámetros)
 - Comentar.
 
@@ -779,20 +776,19 @@ Para las estrellas, indicamos la cantidad en data-rating y [Starability](https:/
 class tagged(ListView):
     model = Resource
     template_name = "blr/resource_list_tagged.html"
+
+    """More code"""
     
-	...
-	...
-	
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         tag = get_object_or_404(Tag, slug=self.kwargs.get('slug'))
         if self.request.user.is_authenticated:
             context['is_saved'] = self.is_saved()
-        context['search'] = ResourceSearch(self.request.GET, queryset=self.get_queryset())
-        context['resource_tagged'] = Resource.objects.filter(resource_tags=tag)
-        context['all_tags'] = Resource.resource_tags.all()
+            context['search'] = ResourceSearch(self.request.GET, queryset=self.get_queryset())
+            context['resource_tagged'] = Resource.objects.filter(resource_tags=tag)
+            context['all_tags'] = Resource.resource_tags.all()
 
-        return context
+            return context
 ```
 
 # Instalación
