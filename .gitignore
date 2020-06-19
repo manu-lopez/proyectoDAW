@@ -12,7 +12,7 @@
 .history
 
 # Enviroments
-.env
+# .env
 
 # Django
 db.sqlite3

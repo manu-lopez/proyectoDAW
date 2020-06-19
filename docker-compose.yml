@@ -6,12 +6,12 @@ services:
     container_name: container_postgres
     restart: always
     environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: pwd
+      POSTGRES_USER: ${USER}
+      POSTGRES_PASSWORD: ${PASSWORD}
     ports:
       - "5432:5432"
     volumes:
-      - ./postgres_data:/var/lib/postgresql/data/
+      - postgres_data:/var/lib/postgresql/data/
 
   web:
     image: djangoslim
@@ -19,7 +19,7 @@ services:
     build: .
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
-      - ./proyecto:/code
+      - proyecto:/code
     ports:
       - "8000:8000"
     depends_on:
