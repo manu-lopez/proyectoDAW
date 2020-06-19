@@ -31,6 +31,7 @@ class ResourceSearch(django_filters.FilterSet):
   def __init__(self, *args, **kwargs):
         super(ResourceSearch, self).__init__(*args, **kwargs)
         self.filters['resource_name'].label = _("Name")
+        self.filters['resource_description'].label = _("Word in description")
         self.filters['resource_author'].label = _("Author")
         self.filters['resource_type'].label = _("Type")
         self.filters['order_by_votes'].label = _("Votes")
@@ -43,4 +44,4 @@ class ResourceSearch(django_filters.FilterSet):
 
   class Meta:
     model = Resource
-    fields = ['resource_name', 'resource_author', 'resource_type']
+    fields = ['resource_name', 'resource_description', 'resource_author', 'resource_type']

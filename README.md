@@ -1,6 +1,4 @@
-
-
-![image-20200618200959076](doc_img/image-20200618200959076.png)
+![image-20200619150343589](doc_img/image-20200619150343589.png)
 
 # Best Learning Resources (BLR)
 
@@ -19,6 +17,7 @@ Cuando se quiere aprender un lenguaje de programación o alguna nueva tecnologí
   - [Django Vote](https://github.com/shellfly/django-vote)
   - [Django Comment](https://github.com/Radi85/Comment)
 - [Starability](https://github.com/LunarLogic/starability)
+- [Bootstrap](https://getbootstrap.com/)
 - [PostgreSQL](https://www.postgresql.org/)
 
 ## Documentación
@@ -134,15 +133,15 @@ Está es la parte más amplia y compleja del proyecto, a parte de lo [visto](htt
 La plataforma permite lo siguiente:
 
 - [Registro](#Registro).
-- [Login, logout, cambiar contraseña](#login,-logout-y-cambiar-contraseña).
+- [Login, logout, cambiar contraseña](#login-logout-y-cambiar-contraseña).
 - [Creación de recurso](#creación-de-recurso).
 - [Actualizar y borrar tus recursos](#actualizar-y-borrar-tus-recursos).
 - [Guardar recursos como favoritos](#guardar-recursos-como-favoritos).
 - [Página usuario](#página-usuario).
 - [Votar recursos](#votar-recursos).
 - [Tags](#tags).
-- Buscar cursos (según varios parámetros)
-- Comentar.
+- [Buscar cursos](#buscar-cursos)
+- [Comentar](#comentar).
 
 #### Configuración base de datos.
 
@@ -770,26 +769,253 @@ Para las estrellas, indicamos la cantidad en data-rating y [Starability](https:/
 
 #### Tags
 
+Para los tags hacemos uso de [Django Taggit](https://github.com/jazzband/django-taggit). Solo tenemos que obtener todos los tags o los correspondientes al recurso, lo pasamos al context del template y listo, lo mostramos. A continuación vamos a ver las partes correspondiente a los tag en las diferentes clases.
+
 > views.py
 
 ```python
+# Esta clase muestra todos los recursos
+class ResourceList(ListView):
+    model = Resource
+    
+    """ More code """
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        """ More code """
+        
+        # Obtenemos todos los tags disponibles
+        context['all_tags'] = Resource.resource_tags.all()
+
+        """ More code """
+
+        return context
+
+# Esta clase muestra los recursos de un tag en concreto
 class tagged(ListView):
     model = Resource
     template_name = "blr/resource_list_tagged.html"
 
-    """More code"""
+    """ More code """
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         tag = get_object_or_404(Tag, slug=self.kwargs.get('slug'))
         if self.request.user.is_authenticated:
-            context['is_saved'] = self.is_saved()
-            context['search'] = ResourceSearch(self.request.GET, queryset=self.get_queryset())
+            """ More code """
+            # Obtenemos los recursos con el tag seleccionado
             context['resource_tagged'] = Resource.objects.filter(resource_tags=tag)
+            # Obtenemos todos los tags disponibles
             context['all_tags'] = Resource.resource_tags.all()
 
             return context
 ```
+
+Al igual que con cards, todos los tags los tenemos en un `html` concreto, para incluirlo y no repetir código.
+
+> all_tags.html
+
+```html
+<p class="text-center">
+  {% for tag in all_tags %}
+  {% if tag|slugify == request.path|slice:"5:-1" %}
+  <a href="{% url 'tagged' tag.slug %}" class="badge badge-pill badge-success">{{tag}}</a>
+  {% else %}
+  <a href="{% url 'tagged' tag.slug %}" class="badge badge-pill badge-secondary">{{tag}}</a>
+  {% endif %}
+  {% endfor %}
+</p>
+```
+
+Si no hay ninguno seleccionado se ve asi:
+
+![image-20200619145524513](doc_img/image-20200619145524513.png)
+
+Y si hemos seleccionado algun se ve en verde:
+
+![image-20200619145550361](doc_img/image-20200619145550361.png)
+
+
+
+#### Buscar cursos
+
+Tenemos dos buscadores, uno en el `navbar` y otro más avanzado en un componente `collapse`de Bootstrap en el cuerpo de la página
+
+> Buscador de navbar
+
+![image-20200619150643310](doc_img/image-20200619150643310.png)
+
+> Buscador avanzado
+
+<img src="doc_img/image-20200619152001095.png" alt="image-20200619152001095" style="zoom:67%;" />
+
+Los buscadores los hemos construido con [Django Filter](https://github.com/carltongibson/django-filter), para ello tenemos que tener crear lo siguiente.
+
+> filters.py
+
+```python
+class ResourceSearch(django_filters.FilterSet):
+	# Opciones de ordenación
+    # Según número de votos
+    order_by_votes = OrderingFilter(
+        choices=(
+            ('resource_stars', 'Lower Votes'),
+            ('-resource_stars', 'Higher Votes'),
+        ),
+    )
+	
+    # Según número de precios
+    order_by_price = OrderingFilter(
+        choices=(
+            ('resource_price', 'Lower Price'),
+            ('-resource_price', 'Higher Price'),
+        ),
+    )
+    
+    # Según fecha de publicación
+    order_by_creation = OrderingFilter(
+        choices=(
+            ('resource_creation_date', 'Oldest'),
+            ('-resource_creation_date', 'Newest'),
+        ),
+    )
+
+    # Renombramos label
+    def __init__(self, *args, **kwargs):
+        super(ResourceSearch, self).__init__(*args, **kwargs)
+        self.filters['resource_name'].label = _("Name")
+        self.filters['resource_author'].label = _("Author")
+        self.filters['resource_type'].label = _("Type")
+        self.filters['order_by_votes'].label = _("Votes")
+        self.filters['order_by_price'].label = _("Prices")
+        self.filters['order_by_creation'].label = _("Date")
+	
+    # Buscamos en nombre, descripción y autor, que contenga los indicado
+    # por el usuario.
+	resource_name = django_filters.CharFilter(lookup_expr='icontains', widget=TextInput(attrs={'placeholder': 'Search...'}))
+	resource_description = django_filters.CharFilter(lookup_expr='icontains', widget=TextInput(attrs={'placeholder': 'Search...'}))
+	resource_author = django_filters.CharFilter(lookup_expr='icontains', widget=TextInput(attrs={'placeholder': 'Search...'}))
+
+	class Meta:
+		model = Resource
+        # Los campos a mostrar para realizar la busqueda
+		fields = ['resource_name', 'resource_description', 'resource_type']
+
+```
+
+A las vistas le añadimos al contexto el queryset que nos genera el `ResourceSearch`
+
+```python
+context['search'] = ResourceSearch(self.request.GET, queryset=self.get_queryset())
+```
+
+Y en los templates podemos mostrar el buscador completo con 
+
+```python
+{{ search.form|crispy }}
+```
+
+O los campos que queramos, por ejemplo:
+
+```
+{{ search.form.resource_name|as_crispy_field }}
+{{ search.form.resource_author|as_crispy_field }}
+```
+
+
+
+#### Comentar
+
+Para los comentarios, simplemente seguimos el proceso que nos indican en [Django Comment](https://github.com/Radi85/Comment).
+
+Durante la realización del proyecto, la instalación del paquete mediante `pip` me daba error, por lo que se hace la instalación manual.
+
+Una vez instalado añadimos en `settings.py`.
+
+```python
+INSTALLED_APPS = (
+    'django.contrib.admin',
+    'django.contrib.auth',
+    ...
+    'comment', # <---
+    ..
+)
+
+LOGIN_URL = 'login' # <--- o tu url
+```
+
+En `urls.py`:
+
+```python
+urlpatterns = patterns(
+    path('', include('blr.urls')),
+    path('admin/', admin.site.urls),
+    path('comment/', include('comment.urls')), # <---
+)
+```
+
+Luego realizamos una migracion de `comment`
+
+```bash
+$ python manage.py migrate comment
+```
+
+Y como mostré en el [modelo de resource](#modelos), lo añadimos
+
+```python
+class Resource(VoteModel, models.Model):
+    ...
+	comments = GenericRelation(Comment)
+```
+
+Añadimos el tag correspondiente en template.
+
+```html
+{% load comment_tags %}  # Cargamos el tag
+{% render_comments object request comments_per_page=5 %}  # Renderizamos y establecemos cinco comentarios por página
+```
+
+Como tenemos un modelo `Profile`que extiende de usuario, tenemos que añadir lo siguiente en `settings.py`
+
+```python
+PROFILE_APP_NAME = 'blr'
+PROFILE_MODEL_NAME = 'Profile'
+```
+
+Y definir el método `get_absolute_url`
+
+```python
+def get_absolute_url(self):
+    return reverse('userPage')
+```
+
+Y este sería el resultado.
+
+<img src="doc_img/image-20200619152809867.png" alt="image-20200619152809867" style="zoom:67%;" />
+
+Solo pueden comentar lo usuarios autentificados, pueden votar comentarios, contestar e incluso denunciarlos.
+
+Si queremos personalizar las opciones de denuncia de comentario, lo indicamos en `settings.py`.
+
+```python
+COMMENT_FLAGS_ALLOWED = 1
+COMMENT_FLAG_REASONS = [
+    (1, _('Spam')),
+    (2, _('Abusive')),
+    (3, _('Racist')),
+]
+```
+
+
+
+![image-20200619154710493](doc_img/image-20200619154710493.png)
+
+
+
+
+
+
 
 # Instalación
 

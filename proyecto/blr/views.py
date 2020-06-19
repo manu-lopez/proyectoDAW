@@ -172,7 +172,6 @@ class ResourceDetail(DetailView):
             lista.append(r.id)
         return lista
 
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         if self.request.user.is_authenticated:
@@ -188,6 +187,7 @@ class tagged(ListView):
     def is_saved(self):
         qs = super().get_queryset() 
         resources = qs.filter(user_saved=self.request.user.profile.id)
+
         lista = []
         for r in resources:
             lista.append(r.id)

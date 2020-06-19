@@ -1,6 +1,6 @@
-<p class="text-center">Tags:
+<p class="text-center">
   {% for tag in all_tags %}
-  {% if tag|slugify in request.path %}
+  {% if tag|slugify == request.path|slice:"5:-1" %}
   <a href="{% url 'tagged' tag.slug %}" class="badge badge-pill badge-success">{{tag}}</a>
   {% else %}
   <a href="{% url 'tagged' tag.slug %}" class="badge badge-pill badge-secondary">{{tag}}</a>

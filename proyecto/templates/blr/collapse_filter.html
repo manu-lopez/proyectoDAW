@@ -12,7 +12,12 @@
     <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
       <div class="card-body">
         <form method="get">
-          {{ search.form|crispy }}
+          {{ search.form.resource_name|as_crispy_field }}
+          {{ search.form.resource_author|as_crispy_field }}
+          {{ search.form.resource_type|as_crispy_field }}
+          {{ search.form.order_by_votes|as_crispy_field }}
+          {{ search.form.order_by_price|as_crispy_field }}
+          {{ search.form.order_by_creation|as_crispy_field }}
           <button class="btn btn-dark btn-block" type="submit">Search</button>
         </form>
       </div>
