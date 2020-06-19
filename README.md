@@ -18,6 +18,7 @@ Cuando se quiere aprender un lenguaje de programación o alguna nueva tecnologí
   - [Django Taggit](https://github.com/jazzband/django-taggit)
   - [Django Vote](https://github.com/shellfly/django-vote)
   - [Django Comment](https://github.com/Radi85/Comment)
+- [Starability](https://github.com/LunarLogic/starability)
 - [PostgreSQL](https://www.postgresql.org/)
 
 ## Documentación
@@ -50,7 +51,7 @@ Docker contiene imagenes oficiales en [docker hub](https://hub.docker.com/), par
 
 La imagen que vamos a crear es partir de la imagen oficial de [python](https://hub.docker.com/_/python). El archivo dockerfile es el siguiente.
 
-> ### dockerfile
+#### dockerfile
 
 ```dockerfile
 # Pull from official image
@@ -86,7 +87,7 @@ Como podemos ver, partimos de la imagen oficial `python:3.8-buster` (buster es u
 
 Hemos comentado que haciamos uso de dos imagenes, por lo que tenemos que tener hacer uso de `docker-compose` y por lo tanto necesitamos el siguiente archivo.
 
-> ### docker-compose.yml
+#### docker-compose.yml
 
 ```yaml
 version: '3'
@@ -142,7 +143,7 @@ La plataforma permite lo siguiente:
 - [Guardar recursos como favoritos](# Guardar recursos como favoritos).
 - [Página usuario](# Página usuario).
 - [Votar recursos](# Votar recursos).
-- Tags.
+- [Tags](# Tags).
 - Buscar cursos (según varios parámetros)
 - Comentar.
 
@@ -352,7 +353,7 @@ Y nuestra template `register.html` es la siguiente
 
 Y así se vería.
 
-<img src="/home/work/.config/Typora/typora-user-images/image-20200619112828167.png" alt="image-20200619112828167" style="zoom:67%;" />
+<img src="doc_img/image-20200619112828167.png" alt="image-20200619112828167" style="zoom:67%;" />
 
 #### Login, logout y cambiar contraseña
 
@@ -410,7 +411,7 @@ class changePassword(PasswordChangeView):
 
 Y con esto y tenemos las funciones creadas.
 
-![image-20200619120740250](/home/work/.config/Typora/typora-user-images/image-20200619120740250.png)
+![image-20200619120740250](doc_img/image-20200619120740250.png)
 
 
 
@@ -492,7 +493,7 @@ class ResourceForm(ModelForm):
 
 Y con esto tenemos la opción de crear recursos.
 
-<img src="/home/work/.config/Typora/typora-user-images/image-20200619123352546.png" alt="image-20200619123352546" style="zoom: 67%;" />
+<img src="doc_img/image-20200619123352546.png" alt="image-20200619123352546" style="zoom: 67%;" />
 
 
 
@@ -500,7 +501,7 @@ Y con esto tenemos la opción de crear recursos.
 
 Si somos los creadores del recurso en nuestra plataforma, nos aparecerán estos botones.
 
-![image-20200619124002747](/home/work/.config/Typora/typora-user-images/image-20200619124002747.png)
+![image-20200619124002747](doc_img/image-20200619124002747.png)
 
 > views.py
 
@@ -546,7 +547,7 @@ class ResourceDelete(DeleteView):
 {% endblock %}
 ```
 
-<img src="/home/work/.config/Typora/typora-user-images/image-20200619125208745.png" alt="image-20200619125208745" style="zoom:50%;" />
+<img src="doc_img/image-20200619125208745.png" alt="image-20200619125208745" style="zoom:50%;" />
 
 > resource_confirm_delete.html
 
@@ -566,7 +567,7 @@ class ResourceDelete(DeleteView):
 {% endblock %}
 ```
 
-<img src="/home/work/.config/Typora/typora-user-images/image-20200619125123953.png" alt="image-20200619125123953" style="zoom: 67%;" />
+<img src="doc_img/image-20200619125123953.png" alt="image-20200619125123953" style="zoom: 67%;" />
 
 
 
@@ -574,7 +575,7 @@ class ResourceDelete(DeleteView):
 
 Si el usuario está autenticado, podrá guardar como favorito los recursos.
 
-![image-20200619125412774](/home/work/.config/Typora/typora-user-images/image-20200619125412774.png)
+![image-20200619125412774](doc_img/image-20200619125412774.png)
 
 > views.py
 
@@ -658,7 +659,7 @@ class UserForm(ModelForm):
 
 Luego en el template `user.html` le damos forma y se vería de esta manera.
 
-<img src="/home/work/.config/Typora/typora-user-images/image-20200619130315947.png" alt="image-20200619130315947" style="zoom:50%;" />
+<img src="doc_img/image-20200619130315947.png" alt="image-20200619130315947" style="zoom:50%;" />
 
 
 
@@ -666,13 +667,13 @@ Luego en el template `user.html` le damos forma y se vería de esta manera.
 
 Al estar registrado, tenemos la opcion de votar positiva o negativamente los recursos a través de estos botones
 
-![image-20200619131100249](/home/work/.config/Typora/typora-user-images/image-20200619131100249.png)
+![image-20200619131100249](doc_img/image-20200619131100249.png)
 
 Antes comentamos que haciamos uso del paquete [Django Vote](https://github.com/shellfly/django-vote), y ahora vamos a explicar como lo usamos.
 
 [Django Vote](https://github.com/shellfly/django-vote) nos añade estos campos a nuestro modelo `Resource` 
 
-![image-20200619132506128](/home/work/.config/Typora/typora-user-images/image-20200619132506128.png)
+![image-20200619132506128](doc_img/image-20200619132506128.png)
 
 Nosotros queremos mostrar la calificacion con una puntuacion máxima de 5, pero como vemos en la imagen, no corresponde la cantidad de votos con la puntuación, por lo que tenemos que hacer un par de cosas que os explico direcamente en el código correspondiente.
 
@@ -743,27 +744,56 @@ Para indicar en el template si un usuario ha votado o no, tenemos que comprobarl
 ...
 ```
 
+Si ha votado `vote_exists` es 1 y si no es 0. Por lo tanto con condiciones mostramos unos u otros en las cards.
+
+Para las estrellas, indicamos la cantidad en data-rating y [Starability](https://github.com/LunarLogic/starability) hace el resto.
+
 > card.html
 
 ```html
 ...
+<p class="starability-result mx-auto" data-rating="{{ resource.resource_stars }}">
+    Rated: {{ resource.resource_stars }} stars
+</p>
+...
 {% if vote_up %}
-<button class="btn btn-success btn-sm" type="submit" name="upvote" value="{{ resource.id }}"><i class="fas fa-plus"></i></button>
+<button class="btn btn-success btn-sm" ... </button>
 {% else %}
-<button class="btn btn-outline-success btn-sm" type="submit" name="upvote" value="{{ resource.id }}"><i class="fas fa-plus"></i>
-</button>
+<button class="btn btn-outline-success btn-sm" ... </button>
 {% endif %}
 {% if vote_down %}
-<button class="btn btn-danger btn-sm" type="submit" name="downvote" value="{{ resource.id }}"><i class="fas fa-minus"></i>
-</button>
+<button class="btn btn-danger btn-sm" ... </button>
 {% else %}
-<button class="btn btn-outline-danger btn-sm" type="submit" name="downvote" value="{{ resource.id }}"><i class="fas fa-minus"></i>
-</button>
+<button class="btn btn-outline-danger btn-sm"... </button>
 {% endif %}
 ...
 ```
 
 
+
+#### Tags
+
+> views.py
+
+```python
+class tagged(ListView):
+    model = Resource
+    template_name = "blr/resource_list_tagged.html"
+    
+	...
+	...
+	
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        tag = get_object_or_404(Tag, slug=self.kwargs.get('slug'))
+        if self.request.user.is_authenticated:
+            context['is_saved'] = self.is_saved()
+        context['search'] = ResourceSearch(self.request.GET, queryset=self.get_queryset())
+        context['resource_tagged'] = Resource.objects.filter(resource_tags=tag)
+        context['all_tags'] = Resource.resource_tags.all()
+
+        return context
+```
 
 # Instalación
 
