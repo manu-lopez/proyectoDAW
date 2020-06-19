@@ -57,6 +57,7 @@ class loginView(LoginView):
 class logoutView(LogoutView):
     next_page = 'login'
 
+# Change Password View
 class changePassword(PasswordChangeView):
     success_url = 'userPage'
 
@@ -82,7 +83,6 @@ class ResourceCreate(LoginRequiredMixin, CreateView):
     form_class = ResourceForm
     template_name = "blr/resource_create.html"
 
-    # Set logged user as creator of the resource
     def form_valid(self, form):
         form.instance.post_author = self.request.user.profile
         form.instance.resource_slug = slugify(form.instance.resource_name)
@@ -95,7 +95,6 @@ class ResourceCreate(LoginRequiredMixin, CreateView):
 
 # Solo puede modificar autor 
 class ResourceUpdate(UpdateView):
-    # get object or 404 -> mirar
     model = Resource
     form_class = ResourceForm
     template_name = "blr/resource_modify.html"

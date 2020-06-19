@@ -63,25 +63,4 @@ class Resource(VoteModel, models.Model):
         return self.resource_name
         
     def get_absolute_url(self):
-        # return reverse('resource-list', args=[resource.resource_slug])
         return reverse_lazy('resource-list')
-        # return reverse ('resource-detail', kwargs={'pk':self.pk})
-
-
-# class Comment(models.Model):
-#     comment_id = models.AutoField(primary_key=True)
-#     comment_text = models.TextField()
-#     comment_date = models.DateField(auto_now_add=True)
-#     comment_votes = models.IntegerField(default=0)
-#     resource_id = models.ForeignKey(Resource, on_delete=models.CASCADE,)
-#     comment_author = models.ForeignKey(
-#         settings.AUTH_USER_MODEL,
-#         on_delete=models.SET_NULL,
-#         null=True,
-#     )
-
-#     class Meta:
-#         unique_together = ['comment_id', 'resource_id']
-
-#     def __str__(self):
-#         return self.comment_text[:15]+"..."
